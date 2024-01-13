@@ -1,0 +1,362 @@
+module adcom is
+
+  import [ dc rdfs sdml skos xsd ]
+
+  @skos:prefLabel = "Advertising Common Object Model (AdCOM)"@en
+  @rdfs:seeAlso = <https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/main/AdCOM%20v1.0%20FINAL.md>
+
+  datatype language_identifier <- string is
+    @dc:description = "ISO-639-1-alpha-2"@en
+  end
+
+  enum KnownCreativeAttributes of
+    @dc:description = "
+    The following table specifies a standard list of creative attributes that
+    can describe an actual ad or restrictions relative to a given placement."@en
+    @owl:equivalentClass = sdml:integer
+
+    AutoplayAudioAd is
+      @rdf:value = 1
+      @dc:description = "Audio Ad (Autoplay)"@en
+    end
+
+    AudioAd is
+      @rdf:value = 2
+      @dc:description = "Audio Ad (User Initiated)"@en
+    end
+
+    AutomaticExpandable is
+      @rdf:value = 3
+      @dc:description = "Expandable (Automatic)"@en
+    end
+
+    ClickExpandable is
+      @rdf:value = 4
+      @dc:description = "Expandable (User Initiated - Click)"@en
+    end
+
+    RolloverExpandable is
+      @rdf:value = 5
+      @dc:description = "Expandable (User Initiated - Rollover)"@en
+    end
+
+    AutoplayInBannerVideoAd is
+      @rdf:value = 6
+      @dc:description = "In-Banner Video Ad (Autoplay)"@en
+    end
+
+    InBannerVideoAd is
+      @rdf:value = 7
+      @dc:description = "In-Banner Video Ad (User Initiated)"@en
+    end
+
+    Pop is
+      @rdf:value = 8
+      @dc:description = "Pop (e.g., Over, Under, or Upon Exit)"@en
+    end
+
+    ProvocativeImagery is
+      @rdf:value = 9
+      @dc:description = "Provocative or Suggestive Imagery"@en
+    end
+
+    ExtremeAnimation is
+      @rdf:value = 10
+      @dc:description = "Shaky, Flashing, Flickering, Extreme Animation, Smileys"@en
+    end
+
+    Surveys is
+      @rdf:value = 11
+      @dc:description = "Surveys"@en
+    end
+
+    TextOnly is
+      @rdf:value = 12
+      @dc:description = "Text Only"@en
+    end
+
+    UserInteractive is
+      @rdf:value = 13
+      @dc:description = "User Interactive (e.g., Embedded Games)"@en
+    end
+
+    WindowsDialog is
+      @rdf:value = 14
+      @dc:description = "Windows Dialog or Alert Style"@en
+    end
+
+    AudioButton is
+      @rdf:value = 15
+      @dc:description = "Has Audio On/Off Button"@en
+    end
+
+    SkipButton is
+      @rdf:value = 16
+      @dc:description = "Ad Provides Skip Button (e.g. VPAID-rendered skip button on pre-roll video)"@en
+    end
+
+    AdobeFlash is
+      @rdf:value = 17
+      @dc:description = "Adobe Flash"@en
+    end
+
+    Responsive is
+      @rdf:value = 18
+      @dc:description = "Responsive; Sizeless; Fluid (i.e., creatives that dynamically resize to environment)"@en
+    end
+
+  end
+
+  datatype VendorCreativeAttributes <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union CreativeAttributes of
+    KnownCreativeAttributes as Known
+    VendorCreativeAttributes as VendorSpecific
+  end
+
+  enum KnownCategoryTaxonomy of
+    @dc:description = "
+    The following table lists the options for taxonomies that can be used to
+    describe content, audience, and ad creative categories."@en
+    @owl:equivalentClass = sdml:integer
+
+    ContentCategoryV1_0 is
+      @rdf:value = 1
+      @dc:description = "
+      IAB Tech Lab Content Category Taxonomy 1.0: Deprecated, and recommend
+      NOT be used since it does not have SCD flags."@en
+      @sdml:usage = Usage:Deprecated
+    end
+
+    ContentCategoryV2_0 is
+      @rdf:value = 2
+      @dc:description = "
+      IAB Tech Lab Content Category Taxonomy 2.0: Deprecated, and recommend
+      NOT be used since it does not have SCD flags."@en
+      @sdml:usage = Usage:Deprecated
+    end
+
+    ProductV1_0 is
+      @rdf:value = 3
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Ad%20Product%20Taxonomies/Ad%20Product%20Taxonomy%201.0.tsv>
+   end
+
+    AudienceV1_1 is
+      @rdf:value = 4
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Audience%20Taxonomies/Audience%20Taxonomy%201.1.tsv>
+   end
+
+    ContentV2_1 is
+      @rdf:value = 5
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Content%20Taxonomies/Content%20Taxonomy%202.1.tsv>
+   end
+
+    ContentV2_2 is
+      @rdf:value = 6
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Content%20Taxonomies/Content%20Taxonomy%202.2.tsv>
+   end
+
+    ContentV3_0 is
+      @rdf:value = 7
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Content%20Taxonomies/Content%20Taxonomy%203.0.tsv>
+   end
+
+    ProductV2_0 is
+      @rdf:value = 8
+      @rdfs:seeAlso =
+      <https://github.com/InteractiveAdvertisingBureau/Taxonomies/blob/main/Ad%20Product%20Taxonomies/Ad%20Product%20Taxonomy%202.0.tsv>
+   end
+
+  end
+
+  datatype VendorCategoryTaxonomy <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union CategoryTaxonomy of
+    KnownCategoryTaxonomy as Known
+    VendorCategoryTaxonomy as VendorSpecific
+  end
+
+  datatype bit <- integer is
+    @xsd:minValueInclusive = 0
+    @xsd:maxValueInclusive = 1
+  end
+
+enum MediaRating of
+    @dc:description = "
+    The following table lists the media ratings used in describing content
+    based on the TAG Inventory Quality Guidelines (IQG) v2.1 categorization."@en
+    @rdfs:seeAlso = <https://www.iab.com/guidelines/digital-video-suite>
+    @owl:equivalentClass = sdml:integer
+
+    AllAudiences  is
+      @rdf:value = 1
+      @dc:description = "All Audiences"@en
+    end
+
+    OverTwelve  is
+      @rdf:value = 1
+      @dc:description = "Everyone Over Age 12"@en
+    end
+
+    Mature  is
+      @rdf:value = 1
+      @dc:description = "Mature Audiences"@en
+    end
+
+  end
+
+  datatype timestamp <- integer is
+    @dc:description = "Timestamp in Unix format (i.e., milliseconds since the epoch)."@en
+  end
+
+  enum KnownNativeImageAssetType of
+    @dc:description = "
+    The following table is a list of common image asset types. This list is non-exhaustive
+    and is intended to be expanded over time. Size recommendations are noted as 'maximum
+    height or width of at least', which means the publisher or supply platform should
+    support a maximum height or width of at least this value and the buying platform
+    knows that an image of this size should be accepted."@en
+    @owl:equivalentClass = sdml:integer
+
+    Icon is
+      @rdf:value = 1
+      @dc:description = "
+      Icon image. Maximum height at least 50 device independent pixels (DIPS);
+      aspect ratio 1:1."@en
+    end
+
+    Main is
+      @rdf:value = 3
+      @dc:description = "
+      Main: Large image preview for the ad. At least one of 2 size variants required:
+
+      Small: Maximum height at least 200 DIPS; maximum width at least 200, 267, or 382
+      DIPS (i.e., aspect ratios of 1:1, 4:3, or 1.91:1, respectively).
+
+      Large: Maximum height at least 627 DIPS; maximum width at least 627, 836, or 1198
+      DIPS (i.e., aspect ratios of 1:1, 4:3, or 1.91:1, respectively)."@en
+    end
+
+  end
+
+  datatype VendorNativeImageAssetType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union NativeImageAssetType of
+    KnownNativeImageAssetType as Known
+    VendorNativeImageAssetType as VendorSpecific
+  end
+
+  enum KnownNativeDataAssetType of
+    @dc:description = "
+    The following table is a list of common data asset types. This list is non-exhaustive
+    and is intended to be expanded over time. Size recommendations are noted as 'maximum
+    length of at least', which means the publisher or supply platform should support a
+    maximum length of at least this value and the buying platform knows that a string
+    of this size should be accepted."@en
+    @owl:equivalentClass = sdml:integer
+
+    Sponsored is
+      @rdf:value = 1
+      @dc:description = "
+      sponsored: 'Sponsored By' message which should contain the brand name of the sponsor.
+      Recommended maximum length of at least 25 characters."@en
+    end
+
+    Descriptive is
+      @rdf:value = 2
+      @dc:description = "
+      desc: Descriptive text associated with the product or service being advertised. Long
+      text lengths may be truncated or ellipsed when rendered. Recommended maximum length
+      of at least 140 characters."@en
+    end
+
+    Rating is
+      @rdf:value = 3
+      @dc:description = "
+      rating: Numeric rating of the product (e.g., an app's rating). Recommended integer
+      range of 0-5."@en
+    end
+
+    Likes is
+      @rdf:value = 4
+      @dc:description = "
+      likes: Number of social ratings or 'likes' of the product."@en
+    end
+
+    Downloads is
+      @rdf:value = 5
+      @dc:description = "
+      downloads: Number downloads and/or installs of the product."@en
+    end
+
+    Price is
+      @rdf:value = 6
+      @dc:description = "
+      price: Price of the product, app, or in-app purchase. Value should include
+      currency symbol in localized format (e.g., '$10')."@en
+    end
+
+    SalePrice is
+      @rdf:value = 7
+      @dc:description = "
+      saleprice: Sale price that can be used together with 'price' to indicate a
+      comparative discounted price. Value should include currency symbol in
+      localized format (e.g., '$8.50')."@en
+    end
+
+    Phone is
+      @rdf:value = 8
+      @dc:description = "
+      phone: A formatted phone number."@en
+    end
+
+    Address is
+      @rdf:value = 9
+      @dc:description = "
+      address: A formatted address."@en
+    end
+
+    DescriptiveAdditional is
+      @rdf:value = 10
+      @dc:description = "
+      desc2: Additional descriptive text associated with the product."@en
+    end
+
+    DisplayUrl is
+      @rdf:value = 11
+      @dc:description = "
+      displayurl: Display URL for the ad. To be used when sponsoring entity
+      doesn't own the content (e.g., 'Sponsored by Brand on Site', where Site
+      is specified in this data asset)."@en
+    end
+
+    CallToActionText is
+      @rdf:value = 12
+      @dc:description = "
+      ctatext: Description of the call to action (CTA) button for the
+      destination URL. Recommended maximum length of at least 15 characters."@en
+    end
+
+  end
+
+  datatype VendorNativeDataAssetType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union NativeDataAssetType of
+    KnownNativeDataAssetType as Known
+    VendorNativeDataAssetType as VendorSpecific
+  end
+
+end
