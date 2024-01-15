@@ -1,11 +1,11 @@
 module adcom_media is
 
+  import [ adcom dc ]
+
   @dc:description = "
   The Media group of objects defines an actual ad including reference to its creative
   and metadata to enable proper rendering, restrictions compliance, event tracking,
   and quality auditing."@en
-
-  import [ adcom dc ]
 
   structure Ad is
 
@@ -126,7 +126,7 @@ module adcom_media is
       @dc:description = "Mime type of the ad (e.g., “image/jpeg”)."@en
     end
 
-    api -> {0..} adcom:ApiFrameworks is
+    api -> {0..} adcom:ApiFramework is
       @dc:description = "API required by the ad if applicable."@en
     end
 
@@ -286,6 +286,7 @@ module adcom_media is
       Asset Subtype Object that indicates this is a link asset and provides additional
       detail as such."@en
     end
+
   end
 
   structure LinkAsset is
@@ -311,6 +312,7 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
   structure TitleAsset is
@@ -327,6 +329,7 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
   structure ImageAsset is
@@ -353,6 +356,7 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
   structure VideoAsset is
@@ -375,6 +379,7 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
   structure DataAsset is
@@ -402,6 +407,7 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
   structure Event is
@@ -419,7 +425,7 @@ module adcom_media is
       Method of tracking requested."@en
     end
 
-    api -> {0..} integer is
+    api -> {0..} adcom:ApiFramework is
       @dc:description = "
       The APIs being used by the tracker; only relevant when the tracking method
       is JavaScript."@en
@@ -439,16 +445,119 @@ module adcom_media is
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
-  structure LinkAsset is
+  structure Video is
     @dc:description = ""@en
 
-    req -> adcom:bit is
-      @dc:description = ""@en
+    mime -> {0..1} string is
+      @dc:description = "Mime type of the ad (e.g., “video/mp4”)."@en
+    end
+
+    api -> {0..} adcom:ApiFramework is
+      @dc:description = "API required by the ad if applicable."@en
+    end
+
+    ctype -> {0..1} adcom:CreativeSubtype is
+      @dc:description = "Subtype of display creative."@en
+    end
+
+    dur -> {0..1} adcom:integer is
+      @dc:description = "Duration of the video creative in seconds."@en
+    end
+
+    adm -> {0..1} string is
+      @dc:description = "
+      Video markup (e.g., VAST document) for the asset.
+      Exactly one of adm and curl is required. Including both is not recommended."@en
+    end
+
+    curl -> {0..1} iri is
+      @dc:description = "
+      A URL that returns the video markup (e.g., VAST document) for the asset. If
+      this ad is matched to a placement specification, the Placement.curlx attribute
+      indicates if this markup retrieval option is supported.
+      Exactly one of adm and curl is required. Including both is not recommended."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Audio is
+    @dc:description = "
+    This object provides additional detail about an ad specifically for audio ads."@en
+
+    mime -> {0..1} string is
+      @dc:description = "Mime type of the ad (e.g., “audio/mp4”)."@en
+    end
+
+    api -> {0..} adcom:ApiFramework is
+      @dc:description = "API required by the ad if applicable."@en
+    end
+
+    ctype -> {0..1} adcom:CreativeSubtype is
+      @dc:description = "Subtype of display creative."@en
+    end
+
+    dur -> {0..1} adcom:integer is
+      @dc:description = "Duration of the video creative in seconds."@en
+    end
+
+    adm -> {0..1} string is
+      @dc:description = "
+      Video markup (e.g., VAST document) for the asset.
+      Exactly one of adm and curl is required. Including both is not recommended."@en
+    end
+
+    curl -> {0..1} iri is
+      @dc:description = "
+      A URL that returns the video markup (e.g., VAST document) for the asset. If
+      this ad is matched to a placement specification, the Placement.curlx attribute
+      indicates if this markup retrieval option is supported.
+      Exactly one of adm and curl is required. Including both is not recommended."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Audit is
+    @dc:description = "
+    This objects represents the outcome of some form of review of the ad. This is
+    typical, for example, when scanning for malware or otherwise performing ad
+    quality reviews."@en
+
+    status -> adcom:AuditStatusCode is
+      @dc:description = "The audit status of the ad."@en
+    end
+
+    feedback -> {0..} string is
+      @dc:description = "
+      One or more human-readable explanations as to reasons for rejection or any
+      changes to fields for ad quality reasons (e.g., adomain, cat, attr, etc.)."@en
+    end
+
+    init -> adcom:timestamp is
+      @dc:description = "Timestamp of the original instantiation of this object."@en
+    end
+
+    lastmod -> adcom:timestamp is
+      @dc:description = "Timestamp of most recent modification to this object."@en
+    end
+
+    corr -> (string -> string) is
+      @dc:description = "
+      Correction object wherein the auditor can specify changes to attributes of
+      the Ad object or its children they believe to be proper. For example, if
+      the original Ad indicated a category of “IAB3”, but the auditor deems the
+      correct category to be “IAB13”, then corr could include a sparse Ad object
+      including just the cat array indicating “IAB13”."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
   end
 
 end

@@ -1,2 +1,569 @@
 module adcom_placement is
+
+  import [ adcom dc ]
+
+  @dc:description = "The Placement group includes objects that define the set of allowed ads for a given impression.
+  This can include mechanical information (e.g., sizes, supported mime types and other rendering options), placement
+  details and positioning, various restrictions lists (e.g., advertiser domains, content categories), and more."@en
+
+  structure Placement is
+    @dc:description = "This object represents the properties of a placement and the characteristics of ads permitted to
+    be rendering within them. Placements of all types begin with this object as their root. It contains one or more
+    subtype objects (i.e., display, video, audio) that define the kinds of media permitted as well as media specific
+    placement behaviors.
+
+    The other attributes in this object apply to all aspects and substructures of the placement (i.e., the same
+    language, secure status, etc. apply to all media types and native assets as applicable)."@en
+
+    tagid -> {0..1} string is
+      @dc:description = "Identifier for specific ad placement or ad tag; unique within a distribution channel."@en
+    end
+
+    ssai -> {0..1} integer is
+      @dc:description = "Indicates if server-side ad insertion (e.g., stitching an ad into an audio or video stream) is
+      in use and the impact of this on asset and tracker retrieval, where 0 = status unknown, 1 = all client-side (i.e.,
+      not server-side), 2 = assets stitched server-side but tracking pixels fired client-side, 3 = all server-side.
+      Default value 0."@en
+    end
+
+    sdk -> {0..1} string is
+      @dc:description = "Name of ad mediation partner, SDK technology, or player responsible for rendering ad (typically
+      video, audio, or mobile); used by some ad servers to customize ad code by partner."@en
+    end
+
+    sdkver -> {0..1} string is
+      @dc:description = "Version of the SDK specified in the sdk attribute."@en
+    end
+
+    reward -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates whether the user recieves a reward for viewing the ad.
+      Typcially video ad implementations allow users to read an additional news article for free, receive an extra life
+      in a game, or get a sponsored ad-free music session. The reward is typically distributed after the video ad is
+      completed. Default value 0."@en
+    end
+
+    wlang -> {0..} string is
+      @dc:description = "Allow list of permitted languages of the creative using ISO-639-1-alpha-2. In practice, vendors
+      using this object may elect an alternate standard (e.g., BCP-47) in which case this must be communicated
+      beforehand. Omission of this attribute indicates there are no restrictions."@en
+    end
+
+    secure -> {0..1} adcom:YesNo is
+      @dc:description = "Flag to indicate if the creative is secure (i.e., uses HTTPS for assets and markup). There is
+      no default and thus if omitted, the secure state is unknown. However, as a practical matter, the safe assumption
+      is to treat unknown as non-secure."@en
+    end
+
+    admx -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if including markup is supported (i.e., the various adm attributes throughout the
+      Placement structure)."@en
+    end
+
+    curlx -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if retrieving markup via URL reference is supported (i.e., the various curl
+      attributes throughout the Placement structure)."@en
+    end
+
+    subtype -> {0..1} PlacementSubtype
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  union PlacementSubtype of
+    DisplayPlacement is
+      @dc:description = "Indicates that this may be a display placementand provides additional detail related
+      thereto."@en
+    end
+    VideoPlacement is
+      @dc:description = "Indicates that this may be a video placementand provides additional detail related thereto."@en
+    end
+    AudioPlacement is
+      @dc:description = "Indicates that this may be a audio placement and provides additional detail related
+      thereto."@en
+    end
+  end
+
+  structure DisplayPlacement is
+    @dc:description = "This object signals that the placement may be a display placement. It provides additional detail
+    about permitted display ads including simple banners, AMPHTML (i.e., Accelerated Mobile Pages), and native."@en
+
+    pos -> {0..1} adcom:PlacementPosition is
+      @dc:description = "Placement position on screen."@en
+    end
+
+    instl -> {0..1} adcom:bit is
+      @dc:description = "Indicates if this is an interstitial placement, where 0 = no, 1 = yes. Default value 0."@en
+    end
+
+    topframe -> {0..1} adcom:bit is
+      @dc:description = "Indicates if the placement will be loaded into an iframe or not, where 0 = unfriendly iframe or
+      unknown, 1 = top frame, friendly iframe, or SafeFrame. A value of '1' can be understood to mean that expandable
+      ads are technically capable of being delivered."@en
+    end
+
+    ifrbust -> {0..} string is
+      @dc:description = "Array of iframe busters supported by this placement. The meaning of strings in this attribute
+      must be coordinated beforehand among vendors."@en
+    end
+
+    clktype -> {0..1} adcom:ClickType is
+      @dc:description = "Indicates the click type of this placement. Default value ClickableDetailsUnknown."@en
+    end
+
+    ampren -> {0..1} integer is
+      @dc:description = "AMPHTML rendering treatment for AMP ads in this placement, where 1 = early loading, 2 =
+      standard loading."@en
+    end
+
+    ptype -> {0..1} adcom:DisplayPlacementType is
+      @dc:description = "The display placement type."@en
+    end
+
+    context -> {0..1} adcom:DisplayContextType is
+      @dc:description = "The context of the placement."@en
+    end
+
+    mime -> {0..1} string is
+      @dc:description = "Array of supported mime types (e.g., “image/jpeg”, “image/gif”). If omitted, all types are
+      assumed."@en
+    end
+
+    api -> {0..} adcom:ApiFramework is
+      @dc:description = "List of supported APIs. If an API is not explicitly listed, it is assumed to be
+      unsupported."@en
+    end
+
+    ctype -> {0..} adcom:DisplayCreativeSubtypes is
+      @dc:description = "Creative subtypes permitted."@en
+    end
+
+    w -> {0..1} integer is
+      @dc:description = "Width of the placement in units specified by unit. Note that this size applies to the placement
+      itself; permitted creative sizes are specified elsewhere (e.g., DisplayFormat, ImageAssetFormat, etc.)."@en
+    end
+
+    h -> {0..1} integer is
+      @dc:description = "Height of the placement in units specified by unit. Note that this size applies to the
+      placement itself; permitted creative sizes are specified elsewhere (e.g., DisplayFormat, ImageAssetFormat,
+      etc.)."@en
+    end
+
+    unit -> {0..1} adcom:SizeUnits is
+      @dc:description = "Unit of size used for placement size (i.e., w and h attributes). Default value Dips."@en
+    end
+
+    priv -> {0..1} adcom:bit is
+      @dc:description = "Indicator of whether or not the placement supports a buyer-specific privacy notice URL, where
+      0 = no, 1 = yes."@en
+    end
+
+    displayfmt -> {0..} DisplayFormat is
+      @dc:description = "Array of objects that govern the attributes (e.g., sizes) of a banner display placement."@en
+    end
+
+    nativefmt -> {0..1} bit is
+      @dc:description = "
+      "@en
+    end
+
+    event -> {0..1} bit is
+      @dc:description = "
+      "@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure DisplayFormat is
+    @dc:description = "This object represents an allowed set of parameters for a banner display ad and often appears as
+    an array when multiple sizes are permitted."@en
+
+    w -> {0..1} integer is
+      @dc:description = "Absolute width of the creative in units specified by DisplayPlacement.unit. Note that mixing
+      absolute and relative sizes is not recommended."@en
+    end
+
+    h -> {0..1} integer is
+      @dc:description = "Absolute height of the creative in units specified by DisplayPlacement.unit. Note that mixing
+      absolute and relative sizes is not recommended."@en
+    end
+
+    wratio -> {0..1} integer is
+      @dc:description = "Relative width of the creative when expressing size as a ratio. Note that mixing absolute and
+      relative sizes is not recommended."@en
+    end
+
+    hratio -> {0..1} integer is
+      @dc:description = "Relative height of the creative when expressing size as a ratio. Note that mixing absolute and
+      relative sizes is not recommended."@en
+    end
+
+    hexpdir-> {0..} adcom:ExpandableDirections is
+      @dc:description = "Absolute height of the creative in units specified by DisplayPlacement.unit. Note that mixing
+      absolute and relative sizes is not recommended."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure NativeFormat is
+    @dc:description = "This object refines a display placement to be specifically a native display placement. It serves
+    as the root of a structure that includes the specifications for each of the assets that comprise the native
+    placement."@en
+
+    asset -> {1..} AssetFormat is
+      @dc:description = "Array of objects that specify the set of native assets and their permitted formats."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure AssetFormat is
+    @dc:description = "This object represents the permitted specifications of a single asset of a native ad. Along with
+    its own attributes, exactly one of the asset subtype objects must be included. All others must be omitted."@en
+
+    id -> integer is
+      @dc:description = "Asset ID, unique within the scope of this placement specification."@en
+    end
+
+    req -> {0..1} adcom:bit is
+      @dc:description = "Indicator of whether or not this asset is required, where 0 = no, 1 = yes. Default value 0."@en
+    end
+
+    subtype -> AssetFormatSubtype
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  union AssetFormatSubtype of
+
+    TitleAssetFormat is
+      @dc:description = "Indicates this is specifying a title asset and provides additional detail as such."@en
+    end
+
+    ImageAssetFormat is
+      @dc:description = "Indicates this is specifying an image asset and provides additional detail as such."@en
+    end
+
+    VideoPlacement as VideoAssetFormat is
+      @dc:description = "Indicates this is specifying a video asset and provides additional detail as such."@en
+    end
+
+    DataAssetFormat is
+      @dc:description = "Indicates this is specifying a data asset and provides additional detail as such."@en
+    end
+
+  end
+
+  structure TitleAssetFormat is
+    @dc:description = "This object is used to provide native asset format specifications for a title element. Title
+    elements are simple strings."@en
+
+    len -> integer is
+      @dc:description = "The maximum allowed length of the title value. Recommended lengths are 25, 90, or 140."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure ImageAssetFormat is
+    @dc:description = "This object is used to provide native asset format specifications for an image element. Image
+    elements are typically used for the actual creative image and icons."@en
+
+    type -> {0..1} adcom:NativeImageAssetType is
+      @dc:description = "The type of image asset supported."@en
+    end
+
+    mime -> {0..} string is
+      @dc:description = "Array of supported mime types (e.g., “image/jpeg”, “image/gif”). If omitted, all types are
+      assumed."@en
+    end
+
+    w -> {0..1} integer is
+      @dc:description = "Absolute width of the image asset in device independent pixels (DIPS). Note that mixing
+      absolute and relative sizes is not recommended."@en
+    end
+
+    h -> {0..1} integer is
+      @dc:description = "Absolute height of the image asset in device independent pixels (DIPS). Note that mixing
+      absolute and relative sizes is not recommended."@en
+    end
+
+    wmin -> {0..1} integer is
+      @dc:description = "The minimum requested absolute width of the image in device independent pixels (DIPS). This
+      option should be used for any scaling of images by the client."@en
+    end
+
+    hmin -> {0..1} integer is
+      @dc:description = "The minimum requested absolute height of the image in device independent pixels (DIPS). This
+      option should be used for any scaling of images by the client."@en
+    end
+
+    wratio -> {0..1} integer is
+      @dc:description = "Relative width of the image asset when expressing size as a ratio. Note that mixing absolute
+      and relative sizes is not recommended."@en
+    end
+
+    hratio -> {0..1} integer is
+      @dc:description = "Relative height of the image asset when expressing size as a ratio. Note that mixing absolute
+      and relative sizes is not recommended."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure DataAssetFormat is
+    @dc:description = "This object is used to provide native asset format specifications for a data element. A data
+    asset is used for all miscellaneous elements such as brand name, ratings, stars, review count, downloads, prices,
+    etc. It is purposefully generic to support native elements not currently contemplated by this specification."@en
+
+    type -> adcom:NativeDataAssetType is
+      @dc:description = "The type of data asset supported."@en
+    end
+
+    len -> {0..1} integer is
+      @dc:description = "The maximum allowed length of the data value."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure EventSpec is
+    @dc:description = "This object specifies a type of ad tracking event and which methods of tracking are available
+    for it. This object may appear as an array for a given placement indicating various types of available tracking
+    events."@en
+
+    type -> adcom:EventType is
+      @dc:description = "Type of supported ad tracking event."@en
+    end
+
+    method -> {0..}adcom:EventTrackingMethod is
+      @dc:description = "Array of supported event tracking methods for this event type."@en
+    end
+
+    api -> {0..} adcom:ApiFramework is
+      @dc:description = "Event tracking APIs available for use; only relevant for JavaScript method trackers."@en
+    end
+
+    jstrk -> {0..} string is
+      @dc:description = "Array of domains, top two levels only (e.g., “tracker.com”), that constitute a restriction
+      list of JavaScript trackers. The sense of the restrictions is determined by wjs."@en
+    end
+
+    wsj -> adcom:bit is
+      @dc:description = "Sense of the jstrk restriction list, where 0 = block list, 1 = allow list. Default value 1."@en
+    end
+
+    pxtrk -> {0..} string is
+      @dc:description = "Array of domains, top two levels only (e.g., “tracker.com”), that constitute a restriction
+      list of pixel image trackers. The sense of the restrictions is determined by wpx."@en
+    end
+
+    wpx -> adcom:bit is
+      @dc:description = "Sense of the pxtrk restriction list, where 0 = block list, 1 = allow list. Default value 1."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure VideoPlacement is
+    @dc:description = "This object signals that the placement may be a video placement and provides additional detail
+    about permitted video ads (e.g., VAST)."@en
+
+    ptype -> {0..1} adcom:VideoPlacementSubtype is
+      @dc:description = "Identifier of the companion ad; unique within this placement."@en
+    end
+
+    pos -> {0..1} adcom:PlacementPosition is
+      @dc:description = "Identifier of the companion ad; unique within this placement."@en
+    end
+
+    delay -> {0..1} adcom:StartDelayMode is
+      @dc:description = "Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll placements."@en
+    end
+
+    skip -> {0..1} adcom:bit is
+      @dc:description = "Indicates if the placement imposes ad skippability, where 0 = no, 1 = yes."@en
+    end
+
+    skipmin -> {0..1} integer is
+      @dc:description = "The placement allows creatives of total duration greater than this number of seconds to be
+      skipped; only applicable if the ad is skippable. Default value 0."@en
+    end
+
+    skipafter -> {0..1} integer is
+      @dc:description = "Number of seconds a creative must play before the placement enables skipping; only applicable
+      if the ad is skippable. Default value 0."@en
+    end
+
+    playmethod -> {0..} adcom:PlaybackMethod is
+      @dc:description = "Playback method(s) in use for this placement."@en
+    end
+
+    playend -> {0..1} adcom:PlaybackCessationMode is
+      @dc:description = ""@en
+    end
+
+    clktype -> {0..1} adcom:ClickType is
+      @dc:description = "Indicates the click type of the placement."@en
+    end
+
+    mime -> {0..} string is
+      @dc:description = "Array of supported mime types (e.g., “video/mp4”). If omitted, all types are assumed."@en
+    end
+
+    api -> {0..} adcom:ApiFramework is
+      @dc:description = "List of supported APIs for this placement. If an API is not explicitly listed, it is assumed
+      to be unsupported. "@en
+    end
+
+    ctype -> {0..} adcom:AudioVideoCreativeSubtypes is
+      @dc:description = "Creative subtypes permitted for this placement."@en
+    end
+
+    w -> {0..1} integer is
+      @dc:description = "Width of the placement in units specified by unit."@en
+    end
+
+    h -> {0..1} integer is
+      @dc:description = "Height of the placement in units specified by unit."@en
+    end
+
+    unit -> {0..1} adcom:SizeUnit is
+      @dc:description = "Units of size used for w and h attributes. Default value Dips."@en
+    end
+
+    mindur -> {0..1} integer is
+      @dc:description = "Minimum creative duration in seconds. This field is mutually exclusive with rqddurs; only one
+      of mindur and rqddurs may be in a bid request."@en
+    end
+
+    maxduration -> {0..1} integer is
+      @dc:description = "Maximum creative duration in seconds. This field is mutually exclusive with rqddurs; only one
+      of maxdur and rqddurs may be in a bid request."@en
+    end
+
+    rqddurs -> {0..} integer is
+      @dc:description = "Precise acceptable durations for video creatives in seconds. This field specifically targets
+      the Live TV use case where non-exact ad durations would result in undesirable 'dead air'. This field is mutually
+      exclusive with mindur and maxdur; if rqddurs is specified, mindur and maxdur must not be specified and vice
+      versa."@en
+    end
+
+    maxext -> {0..1} integer is
+      @dc:description = "Maximum extended creative duration if extension is allowed. If 0, extension is not allowed.
+      If -1, extension is allowed and there is no time limit imposed. If greater than 0, then the value represents the
+      number of seconds of extended play supported beyond the maxdur value. Default value 0."@en
+    end
+
+    minbitr -> {0..1} integer is
+      @dc:description = "Minimum bit rate of the creative in Kbps."@en
+    end
+
+    maxbitr -> {0..1} integer is
+      @dc:description = "Maximum bit rate of the creative in Kbps."@en
+    end
+
+    delivery -> {0..} adcom:DeliveryMethod is
+      @dc:description = "Array of supported creative delivery methods. If omitted, all can be assumed."@en
+    end
+
+    maxseq -> {0..1} integer is
+      @dc:description = "The maximum number of ads that can be played in an ad pod."@en
+    end
+
+    poddur -> {0..1} integer is
+      @dc:description = "Indicates the total amount of time in seconds that advertisers may fill for a “dynamic” video
+      ad pod, or the dynamic portion of a “hybrid” ad pod. This field is required only for the dynamic portion(s) of
+      video ad pods. This field refers to the length of the entire ad break, whereas mindur/maxdur/rqddurs are
+      constraints relating to the slots that make up the pod."@en
+    end
+
+    podid -> {0..1} integer is
+      @dc:description = "Unique identifier indicating that an impression opportunity belongs to a video ad pod. If
+      multiple impression opportunities within a bid request share the same podid, this indicates that those impression
+      opportunities belong to the same video ad pod."@en
+    end
+
+    podseq -> {0..1} adcom:PodSequence is
+      @dc:description = "The sequence (position) of the video ad pod within a content stream. Default value Any"@en
+    end
+
+    slotinpod -> {0..1} adcom:PodSlotPosition is
+      @dc:description = "For video ad pods, this value indicates that the seller can guarantee delivery against the
+      indicated slot position in the pod. Default Value Any"@en
+    end
+
+    mincpmpersec -> {0..1} double is
+      @dc:description = "Minimum CPM per second. This is a price floor for the “dynamic” portion of a video ad pod,
+      relative to the duration of bids an advertiser may submit."@en
+    end
+
+    linear -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    boxing -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    comp -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    comptype -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    expdir -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    overlayexpdir -> {0..1} PlacementPosition is
+      @dc:description = ""@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+   end
+
+  structure AudioPlacement is
+    @dc:description = "This object signals that the placement may be an audio placement and provides additional detail
+    about permitted audio ads (e.g., DAAST)."@en
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+   end
+
+  structure Companion is
+    @dc:description = "This object is used in video and audio placements to specify an associated or so-called
+    companion display ad. Video and audio placements can specify an array of companion ads."@en
+
+    id -> {0..1} string is
+      @dc:description = "Identifier of the companion ad; unique within this placement."@en
+    end
+
+    vcm -> {0..1} adcom:bit is
+      @dc:description = "Indicates the companion ad rendering mode relative to the associated video or audio ad, where
+      0 = concurrent, 1 = end-card. For a given placement, typically only one companion at most should be designated
+      as an end card."@en
+    end
+
+    display -> {0..1} DisplayPlacement is
+      @dc:description = "Display specification object representing the companion ad."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
 end

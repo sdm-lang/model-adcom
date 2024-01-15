@@ -9,10 +9,19 @@ module adcom is
     @dc:description = "ISO-639-1-alpha-2"@en
   end
 
+  enum YesNo of
+    @owl:equivalentClass = sdml:integer
+    Yes is
+      @rdf:value = 1
+    end
+    No is
+      @rdf:value = 0
+    end
+  end
+
   enum KnownCreativeAttributes of
-    @dc:description = "
-    The following table specifies a standard list of creative attributes that
-    can describe an actual ad or restrictions relative to a given placement."@en
+    @dc:description = "The following table specifies a standard list of creative attributes that can describe an actual
+    ad or restrictions relative to a given placement."@en
     @owl:equivalentClass = sdml:integer
 
     AutoplayAudioAd is
@@ -117,24 +126,21 @@ module adcom is
   end
 
   enum KnownCategoryTaxonomy of
-    @dc:description = "
-    The following table lists the options for taxonomies that can be used to
-    describe content, audience, and ad creative categories."@en
+    @dc:description = "The following enumerates the options for taxonomies that can be used to describe content,
+    audience, and ad creative categories."@en
     @owl:equivalentClass = sdml:integer
 
     ContentCategoryV1_0 is
       @rdf:value = 1
-      @dc:description = "
-      IAB Tech Lab Content Category Taxonomy 1.0: Deprecated, and recommend
-      NOT be used since it does not have SCD flags."@en
+      @dc:description = "IAB Tech Lab Content Category Taxonomy 1.0: Deprecated, and recommend NOT be used since it does
+      not have SCD flags."@en
       @sdml:usage = Usage:Deprecated
     end
 
     ContentCategoryV2_0 is
       @rdf:value = 2
-      @dc:description = "
-      IAB Tech Lab Content Category Taxonomy 2.0: Deprecated, and recommend
-      NOT be used since it does not have SCD flags."@en
+      @dc:description = "IAB Tech Lab Content Category Taxonomy 2.0: Deprecated, and recommend NOT be used since it does
+      not have SCD flags."@en
       @sdml:usage = Usage:Deprecated
     end
 
@@ -185,15 +191,9 @@ module adcom is
     VendorCategoryTaxonomy as VendorSpecific
   end
 
-  datatype bit <- integer is
-    @xsd:minValueInclusive = 0
-    @xsd:maxValueInclusive = 1
-  end
-
-enum MediaRating of
-    @dc:description = "
-    The following table lists the media ratings used in describing content
-    based on the TAG Inventory Quality Guidelines (IQG) v2.1 categorization."@en
+  enum MediaRating of
+    @dc:description = "The following table lists the media ratings used in describing content based on the TAG Inventory
+    Quality Guidelines (IQG) v2.1 categorization."@en
     @rdfs:seeAlso = <https://www.iab.com/guidelines/digital-video-suite>
     @owl:equivalentClass = sdml:integer
 
@@ -219,31 +219,26 @@ enum MediaRating of
   end
 
   enum KnownNativeImageAssetType of
-    @dc:description = "
-    The following table is a list of common image asset types. This list is non-exhaustive
-    and is intended to be expanded over time. Size recommendations are noted as 'maximum
-    height or width of at least', which means the publisher or supply platform should
-    support a maximum height or width of at least this value and the buying platform
-    knows that an image of this size should be accepted."@en
+    @dc:description = "The following table is a list of common image asset types. This list is non-exhaustive and is
+    intended to be expanded over time. Size recommendations are noted as 'maximum height or width of at least', which
+    means the publisher or supply platform should support a maximum height or width of at least this value and the
+    buying platform knows that an image of this size should be accepted."@en
     @owl:equivalentClass = sdml:integer
 
     Icon is
       @rdf:value = 1
-      @dc:description = "
-      Icon image. Maximum height at least 50 device independent pixels (DIPS);
-      aspect ratio 1:1."@en
+      @dc:description = "Icon image. Maximum height at least 50 device independent pixels (DIPS); aspect ratio 1:1."@en
     end
 
     Main is
       @rdf:value = 3
-      @dc:description = "
-      Main: Large image preview for the ad. At least one of 2 size variants required:
+      @dc:description = "Main: Large image preview for the ad. At least one of 2 size variants required:
 
-      Small: Maximum height at least 200 DIPS; maximum width at least 200, 267, or 382
-      DIPS (i.e., aspect ratios of 1:1, 4:3, or 1.91:1, respectively).
+      Small: Maximum height at least 200 DIPS; maximum width at least 200, 267, or 382 DIPS (i.e., aspect ratios of 1:1,
+      4:3, or 1.91:1, respectively).
 
-      Large: Maximum height at least 627 DIPS; maximum width at least 627, 836, or 1198
-      DIPS (i.e., aspect ratios of 1:1, 4:3, or 1.91:1, respectively)."@en
+      Large: Maximum height at least 627 DIPS; maximum width at least 627, 836, or 1198 DIPS (i.e., aspect ratios of
+      1:1, 4:3, or 1.91:1, respectively)."@en
     end
 
   end
@@ -258,94 +253,76 @@ enum MediaRating of
   end
 
   enum KnownNativeDataAssetType of
-    @dc:description = "
-    The following table is a list of common data asset types. This list is non-exhaustive
-    and is intended to be expanded over time. Size recommendations are noted as 'maximum
-    length of at least', which means the publisher or supply platform should support a
-    maximum length of at least this value and the buying platform knows that a string
-    of this size should be accepted."@en
+    @dc:description = "The following enumerates a list of common data asset types. This list is non-exhaustive and is
+    intended to be expanded over time. Size recommendations are noted as 'maximum length of at least', which means the
+    publisher or supply platform should support a maximum length of at least this value and the buying platform knows
+    that a string of this size should be accepted."@en
     @owl:equivalentClass = sdml:integer
 
     Sponsored is
       @rdf:value = 1
-      @dc:description = "
-      sponsored: 'Sponsored By' message which should contain the brand name of the sponsor.
-      Recommended maximum length of at least 25 characters."@en
+      @dc:description = "'Sponsored By' message which should contain the brand name of the sponsor. Recommended maximum
+      length of at least 25 characters."@en
     end
 
     Descriptive is
       @rdf:value = 2
-      @dc:description = "
-      desc: Descriptive text associated with the product or service being advertised. Long
-      text lengths may be truncated or ellipsed when rendered. Recommended maximum length
-      of at least 140 characters."@en
+      @dc:description = "Descriptive text associated with the product or service being advertised. Long text lengths
+      may be truncated or ellipsed when rendered. Recommended maximum length of at least 140 characters."@en
     end
 
     Rating is
       @rdf:value = 3
-      @dc:description = "
-      rating: Numeric rating of the product (e.g., an app's rating). Recommended integer
-      range of 0-5."@en
+      @dc:description = "Numeric rating of the product (e.g., an app's rating). Recommended integer range of 0-5."@en
     end
 
     Likes is
       @rdf:value = 4
-      @dc:description = "
-      likes: Number of social ratings or 'likes' of the product."@en
+      @dc:description = "Number of social ratings or 'likes' of the product."@en
     end
 
     Downloads is
       @rdf:value = 5
-      @dc:description = "
-      downloads: Number downloads and/or installs of the product."@en
+      @dc:description = "Number of downloads and/or installs of the product."@en
     end
 
     Price is
       @rdf:value = 6
-      @dc:description = "
-      price: Price of the product, app, or in-app purchase. Value should include
-      currency symbol in localized format (e.g., '$10')."@en
+      @dc:description = "Price of the product, app, or in-app purchase. Value should include currency symbol in
+      localized format (e.g., '$10')."@en
     end
 
     SalePrice is
       @rdf:value = 7
-      @dc:description = "
-      saleprice: Sale price that can be used together with 'price' to indicate a
-      comparative discounted price. Value should include currency symbol in
-      localized format (e.g., '$8.50')."@en
+      @dc:description = "Sale price that can be used together with 'price' to indicate a comparative discounted price.
+      Value should include currency symbol in localized format (e.g., '$8.50')."@en
     end
 
     Phone is
       @rdf:value = 8
-      @dc:description = "
-      phone: A formatted phone number."@en
+      @dc:description = "A formatted phone number."@en
     end
 
     Address is
       @rdf:value = 9
-      @dc:description = "
-      address: A formatted address."@en
+      @dc:description = "A formatted address."@en
     end
 
     DescriptiveAdditional is
       @rdf:value = 10
-      @dc:description = "
-      desc2: Additional descriptive text associated with the product."@en
+      @dc:description = "Additional descriptive text associated with the product."@en
     end
 
     DisplayUrl is
       @rdf:value = 11
-      @dc:description = "
-      displayurl: Display URL for the ad. To be used when sponsoring entity
-      doesn't own the content (e.g., 'Sponsored by Brand on Site', where Site
-      is specified in this data asset)."@en
+      @dc:description = "Display URL for the ad. To be used when sponsoring entity doesn't own the content (e.g.,
+      'Sponsored by Brand on Site', where Site is specified in this data asset)."@en
     end
 
     CallToActionText is
       @rdf:value = 12
-      @dc:description = "
-      ctatext: Description of the call to action (CTA) button for the
-      destination URL. Recommended maximum length of at least 15 characters."@en
+      @dc:description = "Description of the call to action (CTA) button for the destination URL. Recommended maximum
+      length of at least 15 characters."@en
     end
 
   end
@@ -357,6 +334,701 @@ enum MediaRating of
   union NativeDataAssetType of
     KnownNativeDataAssetType as Known
     VendorNativeDataAssetType as VendorSpecific
+  end
+
+  enum KnownEventType of
+    @dc:description = "The following enumerates the types of ad events available for tracking. Scripts that are
+    performing measurement should be deployed at the 'loaded' event."@en
+    @owl:equivalentClass = sdml:integer
+
+    Loaded is
+      @rdf:value = 1
+      @dc:description = "Delivered as a part of the creative markup. Creative may be pre-cached or pre-loaded; prior to
+      initial rendering."@en
+    end
+
+    Impression is
+      @rdf:value = 2
+      @dc:description = "Ad impression per IAB/MRC Ad Impression Measurement Guidelines."@en
+      @rdfs:seeAlso = <https://www.iab.com/guidelines/iab-measurement-guidelines/>
+    end
+
+    Mrc50 is
+      @rdf:value = 3
+      @dc:description = "Visible impression using MRC definition of 50% in view for 1 second."@en
+    end
+
+    Mrc100 is
+      @rdf:value = 4
+      @dc:description = "100% in view for 1 second (i.e., the GroupM standard)."@en
+    end
+
+    Video50 is
+      @rdf:value = 5
+      @dc:description = "Visible impression for video using MRC definition of 50% in view for 2 seconds."@en
+    end
+
+  end
+
+  datatype VendorEventType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union EventType of
+    KnownEventType as Known
+    VendorEventType as VendorSpecific
+  end
+
+  enum KnownEventTrackingMethod of
+    @dc:description = "The following enumerates the available methods of tracking of ad events. Vendor specific codes
+    may include custom measurement companies (e.g., Moat, Doubleverify, IAS, etc.)."@en
+    @owl:equivalentClass = sdml:integer
+
+    ImagePixel is
+      @rdf:value = 4
+      @dc:description = "URL provided will be inserted as a 1x1 pixel at the time of the event."@en
+    end
+
+    JavaScript is
+      @rdf:value = 5
+      @dc:description = "URL provided will be inserted as a JavaScript tag at the time of the event."@en
+    end
+
+  end
+
+  datatype VendorEventTrackingMethod <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union EventTrackingMethod of
+    KnownEventTrackingMethod as Known
+    VendorEventTrackingMethod as VendorSpecific
+  end
+
+  enum KnownApiFramework of
+    @dc:description = "The following enumerates list of API frameworks either supported by a placement or required by an
+    ad."@en
+    @owl:equivalentClass = sdml:integer
+
+    VPAID_10 is
+      @rdf:value = 1
+    end
+
+    VPAID_20 is
+      @rdf:value = 2
+    end
+
+    MRAID_10 is
+      @rdf:value = 3
+    end
+
+    ORMMA is
+      @rdf:value = 4
+    end
+
+    MRAID_20 is
+      @rdf:value = 5
+    end
+
+    MRAID_30 is
+      @rdf:value = 6
+    end
+
+    OMID_10 is
+      @rdf:value = 7
+    end
+
+    SIMID_10 is
+      @rdf:value = 8
+    end
+
+    SIMID_11 is
+      @rdf:value = 9
+    end
+
+  end
+
+  datatype VendorApiFramework <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union ApiFramework of
+    KnownApiFramework as Known
+    VendorApiFramework as VendorSpecific
+  end
+
+  enum KnownAuditStatusCode of
+    @dc:description = "The following enumerates the codes used in Audit objects to reflect status or workflow state."@en
+    @owl:equivalentClass = sdml:integer
+
+    PendingAudit is
+      @rdf:value = 1
+      @dc:description = " An audit has not yet been completed on this ad. A recommendation cannot be made to use this
+      ad, but vendors' policies may override."@en
+    end
+
+    PreApproval is
+      @rdf:value = 2
+      @dc:description = "An audit has not yet been completed on this ad. Subject to vendors' policies, it can be
+      recommended for use. However, once the audit has been completed, its status will change and it may or may not be
+      approved for continued use."@en
+    end
+
+    Approved is
+      @rdf:value = 3
+      @dc:description = "The audit is complete and the ad is approved for use. Note, however, that some attributes
+      (e.g., adomain, cat, attr, etc.) may have been changed in the process by the auditor."@en
+    end
+
+    Denied is
+      @rdf:value = 4
+      @dc:description = "The audit is complete, but the ad has been found unacceptable in some material aspect and is
+      disapproved for use."@en
+    end
+
+    ResubmissionRequested is
+      @rdf:value = 5
+      @dc:description = "A version of the ad has been detected in use that is materially different from the version that
+      was previously audited, which may result in rejection during use until the ad is resubmitted for audit and
+      approved. Vendors need to communicate offline as to the criteria that constitutes a material change."@en
+    end
+
+    Expired is
+      @rdf:value = 6
+      @dc:description = "The ad has been marked as expired by the vendor. Vendors need to communicate offline as to the
+      expected bidding behavior for ads with this status."@en
+    end
+
+  end
+
+  datatype VendorAuditStatusCode <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union AuditStatusCode
+  of
+    KnownAuditStatusCode as Known
+    VendorAuditStatusCode as VendorSpecific
+  end
+
+  enum PlacementPosition of
+    @dc:description = "The following enumerates the placement positions as a relative measure of visibility or
+    prominence. This table has values derived from the TAG Inventory Quality Guidelines (IQG)."@en
+    @owl:equivalentClass = sdml:integer
+
+    Unknown is
+      @rdf:value = 0
+    end
+
+    AboveTheFold is
+      @rdf:value = 1
+    end
+
+    Locked is
+      @rdf:value = 2
+    end
+
+    BelowTheFold is
+      @rdf:value = 3
+    end
+
+    Header is
+      @rdf:value = 4
+    end
+
+    Footer is
+      @rdf:value = 5
+    end
+
+    Sidebar is
+      @rdf:value = 6
+    end
+
+    Fullscreen is
+      @rdf:value = 7
+    end
+
+  end
+
+  enum KnownClickType of
+    @dc:description = "The following enumerates the types of creative activation (i.e., click) behavior types."@en
+    @owl:equivalentClass = sdml:integer
+
+    NonClickable is
+      @rdf:value = 0
+    end
+
+    ClickableDetailsUnknown is
+      @rdf:value = 1
+    end
+
+    ClickableEmbeddedBrowser is
+      @rdf:value = 2
+    end
+
+    ClickableNativeBrowser is
+      @rdf:value = 3
+    end
+
+  end
+
+  datatype VendorClickType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union ClickType of
+    KnownClickType as Known
+    VendorClickType as VendorSpecific
+  end
+
+  enum KnownDisplayPlacementType of
+    @dc:description = "The following enumerates the general types of display placements; the locations where a native
+    ad may be shown in relationship to the surrounding content."@en
+    @owl:equivalentClass = sdml:integer
+
+    ContentFeed is
+      @rdf:value = 1
+      @dc:description = "In the feed of content (e.g., as an item inside the organic feed, grid, listing, carousel,
+      etc.)."@en
+    end
+
+    ContentUnit is
+      @rdf:value = 2
+      @dc:description = "In the atomic unit of the content (e.g., in the article page or single image page)."@en
+    end
+
+    OutsideContent is
+      @rdf:value = 3
+      @dc:description = "Outside the core content (e.g., in the ads section on the right rail, as a banner-style
+      placement near the content, etc.)."@en
+    end
+
+    RecommendationWidget is
+      @rdf:value = 4
+      @dc:description = "Recommendation widget; most commonly presented below article content."@en
+    end
+
+  end
+
+  datatype VendorClickType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union DisplayPlacementType of
+    KnownDisplayPlacementType as Known
+    VendorDisplayPlacementType as VendorSpecific
+  end
+
+  enum KnownDisplayContextType of
+    @dc:description = "The following enumerates the types of context in which a native ad may appear (i.e., the type of
+    content surrounding the ad on the page). This is intended to denote primary content although other content may also
+    appear on the page. Note that there are two levels of detail grouped by 10s (i.e., 12 is a refined case of 100)."@en
+    @owl:equivalentClass = sdml:integer
+
+    ContentCentric is
+      @rdf:value = 10
+      @dc:description = "Content-centric context (e.g., newsfeed, article, image gallery, video gallery, etc.)."@en
+    end
+
+    PrimarilyArticle is
+      @rdf:value = 11
+      @dc:description = "Primarily article content, which could include images, etc. as part of the article."@en
+    end
+
+    PrimarilyVideo is
+      @rdf:value = 12
+      @dc:description = "Primarily video content."@en
+    end
+
+    PrimarilyAudio is
+      @rdf:value = 13
+      @dc:description = "Primarily audio content."@en
+    end
+
+    PrimarilyImage is
+      @rdf:value = 14
+      @dc:description = "Primarily image content."@en
+    end
+
+    UserGenerated is
+      @rdf:value = 15
+      @dc:description = "User-generated content (e.g., forums, comments, etc.)."@en
+    end
+
+    SocialCentric is
+      @rdf:value = 20
+      @dc:description = "Social-centric context (e.g., social network feed, email, chat, etc.)."@en
+    end
+
+    PrimarilyEmail is
+      @rdf:value = 21
+      @dc:description = "Primarily email content."@en
+    end
+
+    PrimarilyChat is
+      @rdf:value = 22
+      @dc:description = "Primarily chat/IM content."@en
+    end
+
+    ProductCentric is
+      @rdf:value = 30
+      @dc:description = "Product context (e.g., product listings, details, recommendations, reviews, etc.)."@en
+    end
+
+    Marketplace is
+      @rdf:value = 31
+      @dc:description = "App store/marketplace."@en
+    end
+
+    Reviews is
+      @rdf:value = 32
+      @dc:description = "Product reviews site primarily, which may sell product secondarily."@en
+    end
+
+  end
+
+  datatype VendorClickType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union DisplayContextType of
+    KnownDisplayContextType as Known
+    VendorDisplayContextType as VendorSpecific
+  end
+
+  enum DisplayCreativeSubtypes of
+    @dc:description = "The following enumerates the various subtypes of display ad creatives."@en
+    @owl:equivalentClass = sdml:integer
+
+    HTML is
+      @rdf:value = 1
+    end
+
+    AMPHTML is
+      @rdf:value = 2
+    end
+
+    StructuredImage is
+      @rdf:value = 3
+    end
+
+    StructuredNative is
+      @rdf:value = 4
+    end
+
+  end
+
+  enum SizeUnits of
+    @dc:description = "The following enumerates the units of height and width used by creatives, assets, and placement
+    specifications where noted."@en
+    @owl:equivalentClass = sdml:integer
+
+    Dips is
+      @rdf:value = 1
+      @dc:description = "Device Independent Pixels (DIPS)"@en
+    end
+
+    Inches is
+      @rdf:value = 2
+    end
+
+    Centimeters is
+      @rdf:value = 3
+    end
+
+  end
+
+  enum ExpandableDirections of
+    @dc:description = "The following enumerates the directions in which an expandable ad may expand, given the
+    positioning of the ad unit on the page and constraints imposed by the content."@en
+    @owl:equivalentClass = sdml:integer
+
+    Left is
+      @rdf:value = 1
+    end
+
+    Right is
+      @rdf:value = 2
+    end
+
+    Up is
+      @rdf:value = 3
+    end
+
+    Down is
+      @rdf:value = 4
+    end
+
+    FullScreen is
+      @rdf:value = 5
+    end
+
+    ResizeMinimize is
+      @rdf:value = 6
+      @dc:description = "Resize/Minimize (make smaller)"@en
+    end
+
+  end
+
+  enum VideoPlacementSubtype of
+    @dc:description = "The following table lists the various types of video placements in accordance with updated IAB
+    Digital Video Guidelines. To be sent using plcmt attribute in Object:Video. Please refer to the implementation
+    guide for examples and information on how to use the updated signals."@en
+    @owl:equivalentClass = sdml:integer
+
+    InStream is
+      @rdf:value = 1
+      @dc:description = "Pre-roll, mid-roll, and post-roll ads that are played before, during or after the streaming
+      video content that the consumer has requested. Instream video must be set to “sound on” by default at player
+      start, or have explicitly clear user intent to watch the video content. While there may be other content
+      surrounding the player, the video content must be the focus of the user’s visit. It should remain the primary
+      content on the page and the only video player in-view capable of audio when playing. If the player converts to
+      floating/sticky subsequent ad calls should accurately convey the updated player size."@en
+    end
+
+    AccompanyingContent is
+      @rdf:value = 2
+      @dc:description = "Pre-roll, mid-roll, and post-roll ads that are played before, during, or after streaming video
+      content. The video player loads and plays before, between, or after paragraphs of text or graphical content, and
+      starts playing only when it enters the viewport. Accompanying content should only start playback upon entering
+      the viewport. It may convert to a floating/sticky player as it scrolls off the page."@en
+    end
+
+    Interstitial is
+      @rdf:value = 3
+      @dc:description = "Video ads that are played without video content. During playback, it must be the primary focus
+      of the page and take up the majority of the viewport and cannot be scrolled out of view. This can be in placements
+      like in-app video or slideshows."@en
+    end
+
+    Standalone is
+      @rdf:value = 4
+      @dc:description = "Video ads that are played without streaming video content. This can be in placements like
+      slideshows, native feeds, in-content or sticky/floating."@en
+    end
+
+  end
+
+  enum GenericStartDelayMode of
+    @dc:description = "The following enumerates the various options for the video or audio start delay. If the start
+    delay value is greater than 0, then the position is mid-roll and the value indicates the start delay."@en
+
+    PreRoll is
+      @rdf:value = 0
+      @dc:description = "Pre-Roll"@en
+    end
+
+
+    MidRoll is
+      @rdf:value = -1
+      @dc:description = "Generic Mid-Roll"@en
+    end
+
+
+    PostRoll is
+      @rdf:value = -2
+      @dc:description = "Generic Post-Roll"@en
+    end
+
+  end
+
+  union StartDelayMode of
+    GenericStartDelayMode as Generic
+    unsigned as Specific is
+      @dc:description = "Mid-Roll (value indicates start delay in second)"@en
+    end
+  end
+
+  enum PlaybackMethod of
+    @dc:description = "The following enumerates the various media playback methods."@en
+
+    OnPageLoadSoundOn is
+      @rdf:value = 1
+      @dc:description = "Initiates on Page Load with Sound On."@en
+    end
+
+    OnPageLoadSoundOff is
+      @rdf:value = 2
+      @dc:description = "Initiates on Page Load with Sound Off."@en
+    end
+
+    OnClickSoundOn is
+      @rdf:value = 3
+      @dc:description = "Initiates on Click with Sound On."@en
+    end
+
+    OnMouseOverSoundOn is
+      @rdf:value = 4
+      @dc:description = "Initiates on Mouse-Over with Sound On."@en
+    end
+
+    OnEnterViewportSoundOn is
+      @rdf:value = 5
+      @dc:description = "Initiates on Entering Viewport with Sound On."@en
+    end
+
+    OnEnterViewportSoundOff is
+      @rdf:value = 6
+      @dc:description = "Initiates on Entering Viewport with Sound Off by Default."@en
+    end
+
+    Continuous is
+      @rdf:value = 7
+      @dc:description = "Continuous Playback - Media playback is set to play additional media automatically without
+      user interaction. The media player will keep playing additional media (playlist or generated) for the user until
+      the user actively stops this from happening."@en
+    end
+
+  end
+
+  enum PlaybackCessationMode of
+    @dc:description = "The following enumerates the various modes for when media playback terminates."@en
+
+    OnVideoCompletion is
+      @rdf:value = 1
+      @dc:description = "On Video Completion or when Terminated by User."@en
+    end
+
+    OnLeavingViewport is
+      @rdf:value = 2
+      @dc:description = "On Leaving Viewport or when Terminated by User."@en
+    end
+
+    OnLeavingViewportContinues is
+      @rdf:value = 3
+      @dc:description = "On Leaving Viewport Continues as a Floating/Slider Unit until Video Completion or when
+      Terminated by User."@en
+    end
+
+  end
+
+  enum AudioVideoCreativeSubtypes of
+    @dc:description = "The following enumerates the various subtypes of audio and video ad creatives."@en
+    @owl:equivalentClass = sdml:integer
+
+    VAST_10 is
+      @rdf:value = 1
+    end
+
+    VAST_20 is
+      @rdf:value = 2
+    end
+
+    VAST_30 is
+      @rdf:value = 3
+    end
+
+    VAST_10_Wrapper is
+      @rdf:value = 4
+    end
+
+    VAST_20_Wrapper is
+      @rdf:value = 5
+    end
+
+    VAST_30_Wrapper is
+      @rdf:value = 6
+    end
+
+    VAST_40 is
+      @rdf:value = 7
+    end
+
+    VAST_40_Wrapper is
+      @rdf:value = 8
+    end
+
+    DAAST_10 is
+      @rdf:value = 9
+    end
+
+    DAAST_10_Wrapper is
+      @rdf:value = 10
+    end
+
+    VAST_41 is
+      @rdf:value = 11
+    end
+
+    VAST_41_Wrapper is
+      @rdf:value = 12
+    end
+
+    VAST_42 is
+      @rdf:value = 13
+    end
+
+    VAST_42_Wrapper is
+      @rdf:value = 14
+    end
+
+  end
+
+  enum DeliveryMethod of
+    @dc:description = "The following enumerates the various options for the delivery of video or audio content."@en
+    @owl:equivalentClass = sdml:integer
+
+    Streaming is
+      @rdf:value = 1
+    end
+
+    Progressive is
+      @rdf:value = 2
+    end
+
+    Download is
+      @rdf:value = 3
+    end
+
+  end
+
+  enum PodSequence of
+    @dc:description = "The following enumerates the values for the pod sequence field, for use in audio and video
+    content streams with one or more ad pods."@en
+    @owl:equivalentClass = sdml:integer
+
+    Last is
+      @rdf:value = -1
+      @dc:description = "Last pod in the content stream."@en
+    end
+
+    Any is
+      @rdf:value = 0
+      @dc:description = "Any pod in the content stream."@en
+    end
+
+    First is
+      @rdf:value = 1
+      @dc:description = "First pod in the content stream."@en
+    end
+
+  end
+
+  enum PodSlotPosition of
+    @dc:description = "The following enumerates the values for the pod sequence field, for use in audio and video
+    content streams with one or more ad pods."@en
+    @owl:equivalentClass = sdml:integer
+
+    Last is
+      @rdf:value = -1
+      @dc:description = "Last ad in the pod."@en
+    end
+
+    Any is
+      @rdf:value = 0
+      @dc:description = "Any ad in the pod."@en
+    end
+
+    First is
+      @rdf:value = 1
+      @dc:description = "First ad in the pod."@en
+    end
+
+    FirstOrLast is
+      @rdf:value = 1
+      @dc:description = "First or Last ad in the pod."@en
+    end
+
   end
 
 end
