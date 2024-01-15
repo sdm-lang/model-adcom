@@ -92,11 +92,11 @@ module adcom_placement is
       @dc:description = "Placement position on screen."@en
     end
 
-    instl -> {0..1} adcom:bit is
-      @dc:description = "Indicates if this is an interstitial placement, where 0 = no, 1 = yes. Default value 0."@en
+    instl -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if this is an interstitial placement. Default value = No."@en
     end
 
-    topframe -> {0..1} adcom:bit is
+    topframe -> {0..1} adcom:YesNo is
       @dc:description = "Indicates if the placement will be loaded into an iframe or not, where 0 = unfriendly iframe or
       unknown, 1 = top frame, friendly iframe, or SafeFrame. A value of '1' can be understood to mean that expandable
       ads are technically capable of being delivered."@en
@@ -153,23 +153,21 @@ module adcom_placement is
       @dc:description = "Unit of size used for placement size (i.e., w and h attributes). Default value Dips."@en
     end
 
-    priv -> {0..1} adcom:bit is
-      @dc:description = "Indicator of whether or not the placement supports a buyer-specific privacy notice URL, where
-      0 = no, 1 = yes."@en
+    priv -> {0..1} adcom:YesNo is
+      @dc:description = "Indicator of whether or not the placement supports a buyer-specific privacy notice URL."@en
     end
 
     displayfmt -> {0..} DisplayFormat is
       @dc:description = "Array of objects that govern the attributes (e.g., sizes) of a banner display placement."@en
     end
 
-    nativefmt -> {0..1} bit is
-      @dc:description = "
-      "@en
+    nativefmt -> {0..1} NativeFormat is
+      @dc:description = "This object specified the required and permitted assets and attributes of a native display
+      placement."@en
     end
 
-    event -> {0..1} bit is
-      @dc:description = "
-      "@en
+    event -> {0..} EventSpec is
+      @dc:description = "Array of supported ad tracking events."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -230,8 +228,8 @@ module adcom_placement is
       @dc:description = "Asset ID, unique within the scope of this placement specification."@en
     end
 
-    req -> {0..1} adcom:bit is
-      @dc:description = "Indicator of whether or not this asset is required, where 0 = no, 1 = yes. Default value 0."@en
+    req -> {0..1} adcom:YesNo is
+      @dc:description = "Indicator of whether or not this asset is required. Default value = No."@en
     end
 
     subtype -> AssetFormatSubtype
@@ -358,8 +356,9 @@ module adcom_placement is
       list of JavaScript trackers. The sense of the restrictions is determined by wjs."@en
     end
 
-    wsj -> adcom:bit is
-      @dc:description = "Sense of the jstrk restriction list, where 0 = block list, 1 = allow list. Default value 1."@en
+    wsj -> adcom:YesNo is
+      @dc:description = "Sense of the jstrk restriction list, where No = block list, Yes = allow list.
+      Default value = Yes."@en
     end
 
     pxtrk -> {0..} string is
@@ -367,8 +366,9 @@ module adcom_placement is
       list of pixel image trackers. The sense of the restrictions is determined by wpx."@en
     end
 
-    wpx -> adcom:bit is
-      @dc:description = "Sense of the pxtrk restriction list, where 0 = block list, 1 = allow list. Default value 1."@en
+    wpx -> adcom:YesNo is
+      @dc:description = "Sense of the pxtrk restriction list, where No = block list, Yes = allow list.
+      Default value Yes."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -391,8 +391,8 @@ module adcom_placement is
       @dc:description = "Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll placements."@en
     end
 
-    skip -> {0..1} adcom:bit is
-      @dc:description = "Indicates if the placement imposes ad skippability, where 0 = no, 1 = yes."@en
+    skip -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the placement imposes ad skippability."@en
     end
 
     skipmin -> {0..1} integer is
@@ -552,9 +552,9 @@ module adcom_placement is
       @dc:description = "Identifier of the companion ad; unique within this placement."@en
     end
 
-    vcm -> {0..1} adcom:bit is
+    vcm -> {0..1} adcom:YesNo is
       @dc:description = "Indicates the companion ad rendering mode relative to the associated video or audio ad, where
-      0 = concurrent, 1 = end-card. For a given placement, typically only one companion at most should be designated
+      No = concurrent, Yes = end-card. For a given placement, typically only one companion at most should be designated
       as an end card."@en
     end
 

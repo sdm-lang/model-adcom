@@ -9,6 +9,14 @@ module adcom is
     @dc:description = "ISO-639-1-alpha-2"@en
   end
 
+  datatype mimetype <- string is
+    @xsd:pattern = "xx|(?P<main>\\w+|\\*)/(?P<sub>\\w+|\\*)(\\s*;\\s*(?P<param>\\w+)=\\s*=\\s*(?P<val>\\S+))?"
+  end
+
+  datatype domainname <- string is
+    @xsd:pattern = "^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\\.)+[A-Za-z]{2, 6}$"
+  end
+
   enum YesNo of
     @owl:equivalentClass = sdml:integer
     Yes is
@@ -214,7 +222,7 @@ module adcom is
 
   end
 
-  datatype timestamp <- integer is
+  datatype timestamp <- unsigned is
     @dc:description = "Timestamp in Unix format (i.e., milliseconds since the epoch)."@en
   end
 
@@ -610,7 +618,7 @@ module adcom is
 
   end
 
-  datatype VendorClickType <- Integer is
+  datatype VendorDisplayPlacementType <- Integer is
     @xsd:minValueInclusive = 500
   end
 
@@ -687,7 +695,7 @@ module adcom is
 
   end
 
-  datatype VendorClickType <- Integer is
+  datatype VendorDisplayContextType <- Integer is
     @xsd:minValueInclusive = 500
   end
 
@@ -1029,6 +1037,345 @@ module adcom is
       @dc:description = "First or Last ad in the pod."@en
     end
 
+  end
+
+  enum ProductionQualities of
+    @dc:description = "The following enumerates the options for content quality. These values are defined by the
+    IAB."@en
+    @rdfs:seeAlso = <https://www.iab.com/wp-content/uploads/2015/03/long-form-video-final.pdf>
+    @owl:equivalentClass = sdml:integer
+
+    Unknown is
+      @rdf:value = 0
+    end
+
+    ProfessionallyProduced is
+      @rdf:value = 1
+    end
+
+    Prosumer is
+      @rdf:value = 2
+    end
+
+    UserGenerated is
+      @rdf:value = 3
+    end
+
+  end
+
+  enum ContentContext of
+    @dc:description = "The following table lists the various options for indicating the type of content being used or
+    consumed by the user in which ads may appear. This table has values derived from the TAG Inventory Quality
+    Guidelines (IQG)."@en
+    @owl:equivalentClass = sdml:integer
+
+    Video is
+      @rdf:value = 1
+      @dc:description = "Video (i.e., video file or stream such as Internet TV broadcasts)"@en
+    end
+
+    Game is
+      @rdf:value = 2
+      @dc:description = "Game (i.e., an interactive software game)"@en
+    end
+
+    Music is
+      @rdf:value = 3
+      @dc:description = "Music (i.e., audio file or stream such as Internet radio broadcasts)"@en
+    end
+
+    Application is
+      @rdf:value = 4
+      @dc:description = "Application (i.e., an interactive software application)"@en
+    end
+
+    Text is
+      @rdf:value = 5
+      @dc:description = "Text (i.e., primarily textual document such as a web page, eBook, or news article)"@en
+    end
+
+    Other is
+      @rdf:value = 6
+      @dc:description = "Other (i.e., none of the other categories applies)"@en
+    end
+
+    Unknown is
+      @rdf:value = 7
+    end
+
+  end
+
+  enum KnownOperatingSystem of
+    @dc:description = "The following enumerates the options for device operating system."@en
+    @owl:equivalentClass = sdml:integer
+
+    OtherNotListed is
+      @rdf:value = 0
+    end
+
+    Nintendo3Ds is
+      @rdf:value = 1
+    end
+
+    Android is
+      @rdf:value = 2
+    end
+
+    AppleTv is
+      @rdf:value = 3
+    end
+
+    Asha is
+      @rdf:value = 4
+    end
+
+    Bada is
+      @rdf:value = 5
+    end
+
+    BlackBerry is
+      @rdf:value = 6
+    end
+
+    Brew is
+      @rdf:value = 7
+    end
+
+    ChromeOs is
+      @rdf:value = 8
+    end
+
+    Darwin is
+      @rdf:value = 9
+    end
+
+    FireOs is
+      @rdf:value = 10
+    end
+
+    FirefoxOs is
+      @rdf:value = 11
+    end
+
+    HeleOs is
+      @rdf:value = 12
+    end
+
+    IOs is
+      @rdf:value = 13
+    end
+
+    Linux is
+      @rdf:value = 14
+    end
+
+    MacOs is
+      @rdf:value = 15
+    end
+
+    MeeGo is
+      @rdf:value = 16
+    end
+
+    MorphOs is
+      @rdf:value = 17
+    end
+
+    NetBsd is
+      @rdf:value = 18
+    end
+
+    NucleusPlus is
+      @rdf:value = 19
+    end
+
+    SonyPSv is
+      @rdf:value = 20
+    end
+
+    SonyPS3 is
+      @rdf:value = 21
+    end
+
+    SonyPS4 is
+      @rdf:value = 22
+    end
+
+    SonyPSp is
+      @rdf:value = 23
+    end
+
+    Symbian is
+      @rdf:value = 24
+    end
+
+    Tizen is
+      @rdf:value = 25
+    end
+
+    WatchOs is
+      @rdf:value = 26
+    end
+
+    WebOs is
+      @rdf:value = 27
+    end
+
+    Windows is
+      @rdf:value = 28
+    end
+
+  end
+
+  datatype VendorOperatingSystem <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union OperatingSystem of
+    KnownOperatingSystem as Known
+    VendorOperatingSystem as VendorSpecific
+  end
+
+  enum ConnectionType of
+    @dc:description = "The following enumerates the options for the type of device connectivity."@en
+    @owl:equivalentClass = sdml:integer
+
+    Wired is
+      @rdf:value = 1
+      @dc:description = "Ethernet; Wired Connection"@en
+    end
+
+    WiFi is
+      @rdf:value = 2
+    end
+
+    CellularUnknown is
+      @rdf:value = 3
+      @dc:description = "Cellular Network - Unknown Generation"@en
+    end
+
+    Cellular2g is
+      @rdf:value = 4
+      @dc:description = "Cellular Network - 2G"@en
+    end
+
+    Cellular3g is
+      @rdf:value = 5
+      @dc:description = "Cellular Network - 3G"@en
+    end
+
+    Cellular4g is
+      @rdf:value = 6
+      @dc:description = "Cellular Network - 4G"@en
+    end
+
+    Cellular5g is
+      @rdf:value = 7
+      @dc:description = "Cellular Network - 5G"@en
+    end
+
+  end
+
+  enum UserAgentSource of
+    @dc:description = "The following enumerates the possible sources for User-Agent metadata."@en
+    @owl:equivalentClass = sdml:integer
+
+    Unknown is
+      @rdf:value = 0
+      @dc:description = "Unknown/unspecified"@en
+    end
+
+    ClientLowEntropy is
+      @rdf:value = 1
+      @dc:description = "User-Agent Client Hints (only low-entropy headers were available)"@en
+      @rdfs:seeAlso = <https://wicg.github.io/ua-client-hints>
+    end
+
+    ClientHighEntropy is
+      @rdf:value = 4
+      @dc:description = "User-Agent Client Hints (with high-entropy headers available)"@en
+      @rdfs:seeAlso = <https://wicg.github.io/ua-client-hints>
+    end
+
+    Header is
+      @rdf:value = 5
+      @dc:description = "Parsed from User-Agent header (the same string carried by the ua field)"@en
+    end
+
+  end
+
+  enum LocationType of
+    @dc:description = "The following enumerates the options to indicate how the geographic information was
+    determined."@en
+    @owl:equivalentClass = sdml:integer
+
+    GpsLocation is
+      @rdf:value = 1
+    end
+
+    IpAddress is
+      @rdf:value = 4
+    end
+
+    UserProvided is
+      @rdf:value = 5
+    end
+
+  end
+
+  enum IpLocationService of
+    @dc:description = "The following enumerates the services and/or vendors used for resolving IP addresses to
+    geolocations."@en
+    @owl:equivalentClass = sdml:integer
+
+    Ip2Location is
+      @rdf:value = 1
+    end
+
+    Neustar is
+      @rdf:value = 2
+    end
+
+    MaxMind is
+      @rdf:value = 3
+    end
+
+    NetAcuity is
+      @rdf:value = 4
+    end
+
+  end
+
+  enum KnownAgentType of
+    @dc:description = "The following enumerates the user agent types a user identifier is from."@en
+    @owl:equivalentClass = sdml:integer
+
+    Client is
+      @rdf:value = 1
+      @dc:description = "An ID which is tied to a specific web browser or device (cookie-based, probabilistic,
+      or other)."@en
+    end
+
+    InAppImpression is
+      @rdf:value = 2
+      @dc:description = "In-app impressions, which will typically contain a type of device ID (or rather, the
+      privacy-compliant versions of device IDs)."@en
+    end
+
+    PersonBased is
+      @rdf:value = 3
+      @dc:description = "A person-based ID, i.e., that is the same across devices."@en
+    end
+
+  end
+
+  datatype VendorAgentType <- Integer is
+    @xsd:minValueInclusive = 500
+  end
+
+  union AgentType of
+    KnownAgentType as Known
+    VendorAgentType as VendorSpecific
   end
 
 end

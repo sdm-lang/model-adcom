@@ -2,92 +2,82 @@ module adcom_media is
 
   import [ adcom dc ]
 
-  @dc:description = "
-  The Media group of objects defines an actual ad including reference to its creative
-  and metadata to enable proper rendering, restrictions compliance, event tracking,
-  and quality auditing."@en
+  @dc:description = "The Media group of objects defines an actual ad including reference to its creative and metadata to
+  enable proper rendering, restrictions compliance, event tracking, and quality auditing."@en
 
   structure Ad is
 
-    @dc:description = "
-    This object is the root of a structure that defines in instance of advertising media.
-    It includes metadata about the ad overall and sub-objects that provide additional
-    detail specific to the type of media comprising the creative."@en
+  @dc:description = "This object is the root of a structure that defines in instance of advertising media. It includes
+  metadata about the ad overall and sub-objects that provide additional detail specific to the type of media comprising
+  the creative."@en
 
     id -> string is
-      @dc:description = "
-      ID of the creative; unique at least throughout the scope of a vendor (e.g., an
-      exchange or buying platform). Note that multiple instances of the same ad when
-      used in transactions must have the same ID."@en
+      @dc:description = "ID of the creative; unique at least throughout the scope of a vendor (e.g., anexchange or
+      buying platform). Note that multiple instances of the same ad when used in transactions must have the same ID."@en
     end
 
     addomain -> {0..} string is
-      @dc:description = "
-      Advertiser domain; top two levels only (e.g., “ford.com”). This can be an array
-      for the case of rotating creatives.
+      @dc:description = "Advertiser domain; top two levels only (e.g., “ford.com”). This can be an array for the case of
+      rotating creatives.
       "@en
     end
 
     bundle -> {0..} string is
-      @dc:description = "
-      When the product of the ad is an app, the unique ID of that app as a bundle or
-      ackage name (e.g., “com.foo.mygame”). This should NOT be an app store ID (e.g.,
-      no iTunes store IDs). This can be an array of for the case of rotating
-      creatives."@en
+      @dc:description = "When the product of the ad is an app, the unique ID of that app as a bundle or package name
+      (e.g., “com.foo.mygame”). This should NOT be an app store ID (e.g., no iTunes store IDs). This can be an array of
+      for the case of rotating creatives."@en
     end
 
     iurl -> {0..1} 1iri is
-      @dc:description = "
-      URL without cache-busting to an image that is representative of the ad content
-      for cursory level ad quality checking."@en
+      @dc:description = "URL without cache-busting to an image that is representative of the ad content for cursory
+      level ad quality checking."@en
     end
 
     cat -> {0..} string is
-      @dc:description = "
-      Array of content categories describing the ad using IDs from the taxonomy
-      indicated in cattax. Implementer should ensure compliance with regional
-      legislation around data usage and sharing."@en
+      @dc:description = "Array of content categories describing the ad using IDs from the taxonomy indicated in cattax.
+      Implementer should ensure compliance with regional legislation around data usage and sharing."@en
     end
 
     cattax -> {0..1} adcom:CategoryTaxonomy is
-      @dc:description = "
-      The taxonomy in use for the cat attribute. Refer to List: Category Taxonomies.
+      @dc:description = "The taxonomy in use for the cat attribute. Refer to List: Category Taxonomies.
       Default value = 2."@en
     end
 
-    lang -> {0..} adcom:language_identifier
-
-    attr -> {0..} adcom:CreativeAttributes is
-      @dc:description = "
-      Set of attributes describing the creative. Refer to List: Creative Attributes."@en
+    lang -> {0..} adcom:language_identifier is
+      @dc:description = "Language of the creative using ISO-639-1-alpha-2. In practice, vendors using this object may
+      elect an alternate standard (e.g., BCP-47) in which case this must be communicated beforehand. The non-standard
+      code “xx” may also be used if the creative has no linguistic content (e.g., a banner with just a company
+      logo)."@en
     end
 
-    secure -> {0..1} adcom:bit is
-      @dc:description = ""@en
+    attr -> {0..} adcom:CreativeAttributes is
+      @dc:description = "Set of attributes describing the creative. Refer to List: Creative Attributes."@en
+    end
+
+    secure -> {0..1} adcom:YesNo is
+      @dc:description = "Flag to indicate if the creative is secure (i.e., uses HTTPS for all assets and markup). There
+      is no default and thus if omitted, the secure state is unknown. However, as a practical matter, the safe
+      assumption is to treat unknown as non-secure."@en
     end
 
     mrating -> {0..1} adcom:MediaRating is
-      @dc:description = ""@en
+      @dc:description = "Media rating per IQG guidelines."@en
     end
 
     init -> {0..1} adcom:timestamp is
-      @dc:description = "
-      Timestamp of the original instantiation of this ad (i.e., this object or any of
-      its children)."@en
+      @dc:description = "Timestamp of the original instantiation of this ad (i.e., this object or any of its children)."@en
     end
 
     lastmod -> {0..} adcom:timestamp is
-      @dc:description = "
-      Timestamp of most recent modification to this ad (i.e., this object or any of
-      its children other than the Audit object)."@en
+      @dc:description = "Timestamp of most recent modification to this ad (i.e., this object or any of its children
+      other than the Audit object)."@en
     end
 
     media -> MediaSubtype
 
     audit -> {0..} Audit is
-      @dc:description = "
-      An object depicting the audit status of the ad; typically part of a quality/safety
-      review process."@en
+      @dc:description = "An object depicting the audit status of the ad; typically part of a quality/safety review
+      process."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -97,32 +87,27 @@ module adcom_media is
   union MediaSubtype of
 
     Display is
-      @dc:description = "
-      Object that indicates this is a display ad and provides additional detail as such."@en
+      @dc:description = "Object that indicates this is a display ad and provides additional detail as such."@en
     end
 
     Video is
-      @dc:description = "
-      Object that indicates this is a video ad and provides additional detail as such."@en
+      @dc:description = "Object that indicates this is a video ad and provides additional detail as such."@en
     end
 
     Audio is
-      @dc:description = "
-      Object that indicates this is a audio ad and provides additional detail as such."@en
+      @dc:description = "Object that indicates this is a audio ad and provides additional detail as such."@en
     end
 
   end
 
   structure Display is
-    @dc:description = "
-    This object provides additional detail about an ad specifically for display ads. There are
-    multiple attributes for specifying creative details: banner for simple banner images native
-    for native ads, adm for including general markup, and curl for referencing general markup
-    via URL. In any given Display object, only one of these attributes should be used to avoid
-    confusion. To the extent feasible, structured objects should be favored over general markup
-    for quality and safety issues."@en
+    @dc:description = "This object provides additional detail about an ad specifically for display ads. There are
+    multiple attributes for specifying creative details: banner for simple banner images, native for native ads, adm
+    for including general markup, and curl for referencing general markup via URL. In any given Display object, only
+    one of these attributes should be used to avoid confusion. To the extent feasible, structured objects should be
+    favored over general markup for quality and safety issues."@en
 
-    mime -> {0..1} string is
+    mime -> {0..1} adcom:mimetype is
       @dc:description = "Mime type of the ad (e.g., “image/jpeg”)."@en
     end
 
@@ -135,32 +120,27 @@ module adcom_media is
     end
 
     w -> {0..1} integer is
-      @dc:description = "
-      Absolute width of the creative in device independent pixels (DIPS), typically for
-      non-native ads. Note that mixing absolute and relative sizes is not recommended."@en
+      @dc:description = "Absolute width of the creative in device independent pixels (DIPS), typically for non-native
+      ads. Note that mixing absolute and relative sizes is not recommended."@en
     end
 
     h -> {0..1} integer is
-      @dc:description = "
-      Absolute height of the creative in device independent pixels (DIPS), typically for
-      non-native ads. Note that mixing absolute and relative sizes is not recommended."@en
+      @dc:description = "Absolute height of the creative in device independent pixels (DIPS), typically for non-native
+      ads. Note that mixing absolute and relative sizes is not recommended."@en
     end
 
     wratio -> {0..1} integer is
-      @dc:description = "
-      Relative width of the creative when expressing size as a ratio, typically for
-      non-native ads. Note that mixing absolute and relative sizes is not recommended."@en
+      @dc:description = "Relative width of the creative when expressing size as a ratio, typically for non-native ads.
+      Note that mixing absolute and relative sizes is not recommended."@en
     end
 
     hratio -> {0..1} integer is
-      @dc:description = "
-      Relative height of the creative when expressing size as a ratio, typically for
-      non-native ads. Note that mixing absolute and relative sizes is not recommended."@en
+      @dc:description = "Relative height of the creative when expressing size as a ratio, typically for non-native ads.
+      Note that mixing absolute and relative sizes is not recommended."@en
     end
 
     priv -> {0..1} string is
-      @dc:description = "
-      URL of a page informing the user about a buyer's targeting activity."@en
+      @dc:description = "URL of a page informing the user about a buyer's targeting activity."@en
     end
 
     adm -> {0..1} string is
@@ -170,27 +150,22 @@ module adcom_media is
     end
 
     curl -> {0..1} string is
-      @dc:description = "
-      Optional means of retrieving display markup by reference; a URL that can return HTML,
-      AMPHTML, or a collection native Asset object and their subordinates). If this ad is
-      matched to a Placement specification, the Placement.curlx attribute indicates if
-      this markup retrieval option is supported. Note that including both adm and curl is
-      not recommended."@en
+      @dc:description = "Optional means of retrieving display markup by reference; a URL that can return HTML, AMPHTML,
+      or a collection native Asset object and their subordinates). If this ad is matched to a Placement specification,
+      the Placement.curlx attribute indicates if this markup retrieval option is supported. Note that including both
+      adm and curl is not recommended."@en
     end
 
     banner -> {0..1} Banner is
-      @dc:description = "
-      Structured banner image object, recommended for simple banner creatives."@en
+      @dc:description = "Structured banner image object, recommended for simple banner creatives."@en
     end
 
     native -> {0..1} Native is
-      @dc:description = "
-      Structured native object, recommended for native ads."@en
+      @dc:description = "Structured native object, recommended for native ads."@en
     end
 
     event -> {0..} Event is
-      @dc:description = "
-      Array of events that the advertiser or buying platform wants to track."@en
+      @dc:description = "Array of events that the advertiser or buying platform wants to track."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -198,19 +173,16 @@ module adcom_media is
   end
 
   structure Banner is
-    @dc:description = "
-    This object describes a basic banner creative. It is intended for display scenarios that
-    require a simple, structured image/link pair and is more secure than allowing arbitrary
-    HTML or JavaScript code."@en
+    @dc:description = "This object describes a basic banner creative. It is intended for display scenarios that require
+    a simple, structured image/link pair and is more secure than allowing arbitrary HTML or JavaScript code."@en
 
     img -> iri is
       @dc:description = "A URL that will return the image."@en
     end
 
     link -> LinkAsset is
-      @dc:description = "
-      Destination link if the image is activated (e.g., clicked); not applicable in some
-      ontexts (e.g., DOOH) and its inclusion does not guarantee it will be supported."@en
+      @dc:description = "Destination link if the image is activated (e.g., clicked); not applicable in some ontexts
+      (e.g., DOOH) and its inclusion does not guarantee it will be supported."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -218,18 +190,15 @@ module adcom_media is
   end
 
   structure Native is
-    @dc:description = "
-    This object is the root of a structure that defines a native display ad."@en
+    @dc:description = "This object is the root of a structure that defines a native display ad."@en
 
     img -> LinkAsset is
-      @dc:description = "
-      Default destination link for the native ad overall; used if an asset is activated
-      (e.g., clicked) that doesn't specify it's own destination link."@en
+      @dc:description = "Default destination link for the native ad overall; used if an asset is activated (e.g.,
+      clicked) that doesn't specify it's own destination link."@en
     end
 
     asset -> {0..} Asset is
-      @dc:description = "
-      Array of assets that comprise the native ad."@en
+      @dc:description = "Array of assets that comprise the native ad."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -237,21 +206,17 @@ module adcom_media is
   end
 
   structure Asset is
-    @dc:description = "
-    This object is the container for each asset comprising a native ad. Each asset is of
-    a specific type and to reflect this, one and only one of the subtype objects (i.e.,
-    title, img, video, data) must be present; all others should be omitted."@en
+    @dc:description = "This object is the container for each asset comprising a native ad. Each asset is of a specific
+    type and to reflect this, one and only one of the subtype objects (i.e., title, img, video, data) must be present;
+    all others should be omitted."@en
 
     id -> {0..1} integer is
-      @dc:description = "
-      The value of AssetFormat.id if this ad references a specific native placement
-      defined by a Placement object and its structure."@en
+      @dc:description = "The value of AssetFormat.id if this ad references a specific native placement defined by a
+      Placement object and its structure."@en
     end
 
-    req -> {0..1} adcom:bit is
-      @dc:description = "
-      Indicates if the asset is required to be displayed, where 0 = no, 1 = yes.
-      Default value = 0."@en
+    req -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the asset is required to be displayed. Default value = No."@en
     end
 
     sub_type -> AssetSubType
@@ -262,53 +227,44 @@ module adcom_media is
 
   union AssetSubType of
     TitleAsset is
-      @dc:description = "
-      Asset Subtype Object that indicates this is a title asset and provides additional
-      detail as such."@en
+      @dc:description = "Asset Subtype Object that indicates this is a title asset and provides additional detail as
+      such."@en
     end
     ImageAsset is
-      @dc:description = "
-      Asset Subtype Object that indicates this is a image asset and provides additional
-      detail as such."@en
+      @dc:description = "Asset Subtype Object that indicates this is a image asset and provides additional detail as
+      such."@en
     end
     VideoAsset is
-      @dc:description = "
-      Asset Subtype Object that indicates this is a video asset and provides additional
-      detail as such."@en
+      @dc:description = "Asset Subtype Object that indicates this is a video asset and provides additional detail as
+      such."@en
     end
     DataAsset is
-      @dc:description = "
-      Asset Subtype Object that indicates this is a data asset and provides additional
-      detail as such."@en
+      @dc:description = "Asset Subtype Object that indicates this is a data asset and provides additional detail as
+      such."@en
     end
     LinkAsset is
-      @dc:description = "
-      Asset Subtype Object that indicates this is a link asset and provides additional
-      detail as such."@en
+      @dc:description = "Asset Subtype Object that indicates this is a link asset and provides additional detail as
+      such."@en
     end
 
   end
 
   structure LinkAsset is
-    @dc:description = "
-    This object identifies the native asset as a link asset and is used to define
-    navigation for call-to-action or other activations (i.e., clicks). A link asset
-    can be independent or associated with the overall native ad (i.e., a default
-    for all assets)."@en
+    @dc:description = "This object identifies the native asset as a link asset and is used to define navigation for
+    call-to-action or other activations (i.e., clicks). A link asset can be independent or associated with the
+    overall native ad (i.e., a default for all assets)."@en
 
     url -> iri is
       @dc:description = "Landing URL of the clickable link."@en
     end
 
     urlfb -> {0..1} iri is
-      @dc:description = "
-      Fallback URL for deep-link to be used if the URL specified in url is not
-      supported by the device."@en
+      @dc:description = "Fallback URL for deep-link to be used if the URL specified in url is not supported by the
+      device."@en
     end
 
     trkr -> {0..} string is
-      @dc:description = "
-      List of third-party tracker URLs to be fired on click."@en
+      @dc:description = "List of third-party tracker URLs to be fired on click."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -316,9 +272,8 @@ module adcom_media is
   end
 
   structure TitleAsset is
-    @dc:description = "
-    This object identifies the native asset as a title asset, which is essentially
-    just a plain text string with specified length."@en
+    @dc:description = "This object identifies the native asset as a title asset, which is essentially just a plain text
+    string with specified length."@en
 
     text -> string is
       @dc:description = "The text content of the text element."@en
@@ -333,22 +288,19 @@ module adcom_media is
   end
 
   structure ImageAsset is
-    @dc:description = "
-    This object identifies the native asset as a image asset. Image assets are use
-    for such elements as the actual creative images and icons."@en
+    @dc:description = "This object identifies the native asset as a image asset. Image assets are use for such elements
+    as the actual creative images and icons."@en
 
     url -> iri is
       @dc:description = "A URL that returns the image for the asset."@en
     end
 
     w -> {0..1} integer is
-      @dc:description = "
-      Width of the image asset in device independent pixels (DIPS)."@en
+      @dc:description = "Width of the image asset in device independent pixels (DIPS)."@en
     end
 
     h ->  {0..1} integer is
-      @dc:description = "
-      Height of the image asset in device independent pixels (DIPS)."@en
+      @dc:description = "Height of the image asset in device independent pixels (DIPS)."@en
     end
 
     type -> adcom:NativeImageAssetType is
@@ -360,22 +312,18 @@ module adcom_media is
   end
 
   structure VideoAsset is
-    @dc:description = "
-    This object identifies the native asset as a video asset. Video markup
-    (e.g., VAST) must be either included or referenced."@en
+    @dc:description = "This object identifies the native asset as a video asset. Video markup (e.g., VAST) must be
+    either included or referenced."@en
 
     adm -> {0..1} string is
-      @dc:description = "
-      Video markup (e.g., VAST document) for the asset.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "Video markup (e.g., VAST document) for the asset. Exactly one of adm and curl is required.
+      Including both is not recommended."@en
     end
 
     curl -> {0..1} iri is
-      @dc:description = "
-      A URL that returns the video markup (e.g., VAST document) for the asset. If
-      this ad is matched to a placement specification, the Placement.curlx attribute
-      indicates if this markup retrieval option is supported.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "A URL that returns the video markup (e.g., VAST document) for the asset. If this ad is matched
+      to a placement specification, the Placement.curlx attribute indicates if this markup retrieval option is
+      supported. Exactly one of adm and curl is required. Including both is not recommended."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -383,27 +331,22 @@ module adcom_media is
   end
 
   structure DataAsset is
-    @dc:description = "
-    This object identifies the native asset as a data asset. A data asset is used for
-    all miscellaneous elements such as brand name, ratings, stars, review count,
-    downloads, price, counts, etc. It is purposefully generic to support native
-    elements not currently contemplated by this specification."@en
+    @dc:description = " This object identifies the native asset as a data asset. A data asset is used for all
+    miscellaneous elements such as brand name, ratings, stars, review count, downloads, price, counts, etc. It is
+    purposefully generic to support native elements not currently contemplated by this specification."@en
 
     value -> string is
-      @dc:description = "
-      A formatted string of data to be displayed (e.g., “5 stars”, “3.4 stars out of
-      5”, “$10”, etc.)."@en
+      @dc:description = "A formatted string of data to be displayed (e.g., “5 stars”, “3.4 stars out of 5”,
+      “$10”, etc.)."@en
     end
 
     len -> {0..1} integer is
-      @dc:description = "
-      The length of the value contents. This length should conform to recommendations
-      provided in List: Native Data Asset Types"@en
+      @dc:description = "The length of the value contents. This length should conform to recommendations provided in
+      NativeDataAssetType"@en
     end
 
     type -> {0..1} adcom:NativeDataAssetType is
-      @dc:description = "
-      The type of data represented by this asset. Refer to List: Native Data Asset Types."@en
+      @dc:description = "The type of data represented by this asset. Refer to List: Native Data Asset Types."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -411,37 +354,29 @@ module adcom_media is
   end
 
   structure Event is
-    @dc:description = "
-    This object specifies a type of event that the advertiser or buying platform wants
-    to track along with the information required to do so."@en
+    @dc:description = "This object specifies a type of event that the advertiser or buying platform wants to track
+    along with the information required to do so."@en
 
     type -> adcom:EventType is
-      @dc:description = "
-      Type of event to track."@en
+      @dc:description = "Type of event to track."@en
     end
 
     method -> adcom:EventTrackingMethod is
-      @dc:description = "
-      Method of tracking requested."@en
+      @dc:description = "Method of tracking requested."@en
     end
 
     api -> {0..} adcom:ApiFramework is
-      @dc:description = "
-      The APIs being used by the tracker; only relevant when the tracking method
-      is JavaScript."@en
+      @dc:description = "The APIs being used by the tracker; only relevant when the tracking method is JavaScript."@en
     end
 
     url -> iri is
-      @dc:description = "
-      The URL of the tracking pixel or JavaScript tag, respectively. Required for
-      Image-Pixel or JavaScript methods."@en
+      @dc:description = "The URL of the tracking pixel or JavaScript tag, respectively. Required for ImagePixel or
+      JavaScript methods."@en
     end
 
-    cdata -> (string -> string) is
-      @dc:description = "
-      An array of key-value pairs to support vendor-specific data required for
-      custom tracking. For example, the account number of a buyer with a tracking
-      company might be represented as: {'acct': '123'}."@en
+    cdata -> {0..} (string -> string) is
+      @dc:description = "An array of key-value pairs to support vendor-specific data required for custom tracking. For
+      example, the account number of a buyer with a tracking company might be represented as: {'acct': '123'}."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -449,9 +384,9 @@ module adcom_media is
   end
 
   structure Video is
-    @dc:description = ""@en
+    @dc:description = "This object provides additional detail about an ad specifically for video ads."@en
 
-    mime -> {0..1} string is
+    mime -> {0..1} mimetype is
       @dc:description = "Mime type of the ad (e.g., “video/mp4”)."@en
     end
 
@@ -468,17 +403,14 @@ module adcom_media is
     end
 
     adm -> {0..1} string is
-      @dc:description = "
-      Video markup (e.g., VAST document) for the asset.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "Video markup (e.g., VAST document) for the asset. Exactly one of adm and curl is required.
+      Including both is not recommended."@en
     end
 
     curl -> {0..1} iri is
-      @dc:description = "
-      A URL that returns the video markup (e.g., VAST document) for the asset. If
-      this ad is matched to a placement specification, the Placement.curlx attribute
-      indicates if this markup retrieval option is supported.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "A URL that returns the video markup (e.g., VAST document) for the asset. If this ad is matched
+      to a placement specification, the Placement.curlx attribute indicates if this markup retrieval option is
+      supported. Exactly one of adm and curl is required. Including both is not recommended."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -486,8 +418,7 @@ module adcom_media is
   end
 
   structure Audio is
-    @dc:description = "
-    This object provides additional detail about an ad specifically for audio ads."@en
+    @dc:description = "This object provides additional detail about an ad specifically for audio ads."@en
 
     mime -> {0..1} string is
       @dc:description = "Mime type of the ad (e.g., “audio/mp4”)."@en
@@ -506,17 +437,14 @@ module adcom_media is
     end
 
     adm -> {0..1} string is
-      @dc:description = "
-      Video markup (e.g., VAST document) for the asset.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "Video markup (e.g., VAST document) for the asset. Exactly one of adm and curl is required.
+      Including both is not recommended."@en
     end
 
     curl -> {0..1} iri is
-      @dc:description = "
-      A URL that returns the video markup (e.g., VAST document) for the asset. If
-      this ad is matched to a placement specification, the Placement.curlx attribute
-      indicates if this markup retrieval option is supported.
-      Exactly one of adm and curl is required. Including both is not recommended."@en
+      @dc:description = "A URL that returns the video markup (e.g., VAST document) for the asset. If this ad is matched
+      to a placement specification, the Placement.curlx attribute indicates if this markup retrieval option is
+      supported. Exactly one of adm and curl is required. Including both is not recommended."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.
@@ -524,19 +452,16 @@ module adcom_media is
   end
 
   structure Audit is
-    @dc:description = "
-    This objects represents the outcome of some form of review of the ad. This is
-    typical, for example, when scanning for malware or otherwise performing ad
-    quality reviews."@en
+    @dc:description = "This objects represents the outcome of some form of review of the ad. This is typical, for
+    example, when scanning for malware or otherwise performing ad quality reviews."@en
 
     status -> adcom:AuditStatusCode is
       @dc:description = "The audit status of the ad."@en
     end
 
     feedback -> {0..} string is
-      @dc:description = "
-      One or more human-readable explanations as to reasons for rejection or any
-      changes to fields for ad quality reasons (e.g., adomain, cat, attr, etc.)."@en
+      @dc:description = "One or more human-readable explanations as to reasons for rejection or any changes to fields
+      for ad quality reasons (e.g., adomain, cat, attr, etc.)."@en
     end
 
     init -> adcom:timestamp is
@@ -548,12 +473,10 @@ module adcom_media is
     end
 
     corr -> (string -> string) is
-      @dc:description = "
-      Correction object wherein the auditor can specify changes to attributes of
-      the Ad object or its children they believe to be proper. For example, if
-      the original Ad indicated a category of “IAB3”, but the auditor deems the
-      correct category to be “IAB13”, then corr could include a sparse Ad object
-      including just the cat array indicating “IAB13”."@en
+      @dc:description = "Correction object wherein the auditor can specify changes to attributes of the Ad object or its
+      children they believe to be proper. For example, if the original Ad indicated a category of “IAB3”, but the
+      auditor deems the correct category to be “IAB13”, then corr could include a sparse Ad object including just the
+      cat array indicating “IAB13”."@en
     end
 
     ;; ext -> Object -- Optional vendor-specific extensions.

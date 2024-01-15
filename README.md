@@ -4,6 +4,8 @@ This repository contains an SDML representation of the [Advertising Common Objec
 [IAB Tech Lab](https://iabtechlab.com/). AdCOM itself is used in the [OpenRTB v3.0](https://github.com/InteractiveAdvertisingBureau/openrtb) specification as well as in the [OpenRTB Ad Management API v1.1](https://github.com/InteractiveAdvertisingBureau/AdManagementAPI/blob/master/Ad%20Management%20API%20v1.md)
 specification.
 
+Note that this is not an abstract domain model as-is, it is a lower-level representation for example purposes.
+
 ## Repository Content
 
 The `sdml` directory contains a number of files, 
@@ -117,7 +119,7 @@ end
 According to OpenRTB:
 
 > An optional attribute may have a default value to be assumed if omitted. If no default is indicated, then by 
-> convention its absence should be interpreted as /unknown/, unless otherwise specified. 
+> convention its absence should be interpreted as *unknown*, unless otherwise specified. 
 
 This model does not introduce specific /Unknown/ values as the [AdCOM proto buffer repository](https://github.com/IABTechLab/adcom-proto) does.
 

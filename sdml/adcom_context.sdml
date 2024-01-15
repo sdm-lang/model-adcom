@@ -1,2 +1,907 @@
 module adcom_context is
+
+  import [ adcom dc ]
+
+  @description = "This group of objects represent concepts that are interacting, presenting, enclosing, or are otherwise
+  relating to the world in which impressions live. These include the user, their device, their location, the channel
+  (e.g., site, app, digital out-of-home) with which they are interacting, the channel's publisher, its content, and
+  regulations that are in effect (e.g., COPPA, GDPR)."@en
+
+  structure DistributionChannel is
+    @description = "As an abstract class, a DistributionChannel is never instantiated on its own. Only objects of its
+    derived classes are actually realized."@en
+
+    id -> string is
+      @description = "Vendor-specific unique identifier of the distribution channel."@en
+    end
+
+    name -> string is
+      @description = "Displayable name of the distribution channel."@en
+    end
+
+    pub -> Publisher is
+      @description = "Details about the publisher of the distribution channel."@en
+    end
+
+    content -> Content is
+      @description = "Details about the content within the distribution channel."@en
+    end
+
+  end
+
+  structure Site is
+    @description = "This object is used to define an ad supported website, in contrast to a non-browser application,
+    for example. As a derived class, a Site object inherits all DistributionChannel attributes and adds those defined
+    below."@en
+
+    channel -> DistributionChannel is
+      @sdml:flatten = true
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "Domain of the site (e.g., “mysite.foo.com”)."@en
+    end
+
+    cat -> {0..} string is
+      @dc:description = "Array of content categories describing the site using IDs from the taxonomy indicated in
+      cattax."@en
+    end
+
+    sectcat -> {0..} string is
+      @dc:description = "Array of content categories describing the current section of the site using IDs from the
+      taxonomy indicated in cattax."@en
+    end
+
+    pagecat -> {0..} string is
+      @dc:description = "Array of content categories describing the current page or view of the site using IDs from the
+      taxonomy indicated in cattax."@en
+    end
+
+    cattax -> {0..1} adcom:CategoryTaxonomy is
+      @dc:description = "The taxonomy in use for the cat, sectcat and pagecat attributes."@en
+    end
+
+    privpolicy -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the site has a privacy policy."@en
+    end
+
+    keywords -> {0..1} string is
+      @dc:description = "Comma-separated list of keywords about the site. Only one of 'keywords' or 'kwarray' may be
+      present. NOTE: this field is deprecated, use 'kwarray' instead."@en
+      @dsdml:usage = Deprecated
+    end
+
+    kwarray -> {0..} string is
+      @dc:description = "Array of keywords about the site. Only one of 'keywords' or 'kwarray' may be present."@en
+    end
+
+    page -> {0..1} iri is
+      @dc:description = "URL of the page within the site."@en
+    end
+
+    ref -> {0..1} string is
+      @dc:description = "Referrer URL that caused navigation to the current page."@en
+    end
+
+    search -> {0..1} string is
+      @dc:description = "Search string that caused navigation to the current page."@en
+    end
+
+    mobule -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the site has been programmed to optimize layout when viewed on mobile devices."@en
+    end
+
+    amp -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the page is built with AMP HTML."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure App is
+    @description = "This object is used to define an ad supported non-browser application, in contrast to a typical
+    website, example. As a derived class, an App object inherits all DistributionChannel attributes and adds those
+    defined below."@en
+
+    channel -> DistributionChannel is
+      @sdml:flatten = true
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "Domain of the app (e.g., “mygame.foo.com”)."@en
+    end
+
+    cat -> {0..} string is
+      @dc:description = "Array of content categories describing the site using IDs from the taxonomy indicated in
+      cattax."@en
+    end
+
+    sectcat -> {0..} string is
+      @dc:description = "Array of content categories describing the current section of the site using IDs from the
+      taxonomy indicated in cattax."@en
+    end
+
+    pagecat -> {0..} string is
+      @dc:description = "Array of content categories describing the current page or view of the site using IDs from the
+      taxonomy indicated in cattax."@en
+    end
+
+    cattax -> {0..1} adcom:CategoryTaxonomy is
+      @dc:description = "The taxonomy in use for the cat, sectcat and pagecat attributes."@en
+    end
+
+    privpolicy -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the site has a privacy policy."@en
+    end
+
+    keywords -> {0..1} string is
+      @dc:description = "Comma-separated list of keywords about the site. Only one of 'keywords' or 'kwarray' may be
+      present. NOTE: this field is deprecated, use 'kwarray' instead."@en
+      @dsdml:usage = Deprecated
+    end
+
+    kwarray -> {0..} string is
+      @dc:description = "Array of keywords about the site. Only one of 'keywords' or 'kwarray' may be present."@en
+    end
+
+    bundle -> {0..1} string is
+      @dc:description = "Bundle or package name of the app (e.g., “com.foo.mygame”) and should NOT be app store IDs
+      (e.g., not iTunes store IDs)."@en
+    end
+
+    storeid -> {0..1} string is
+      @dc:description = "The ID of the app in an app store (e.g., Apple iTunes, Google Play)."@en
+    end
+
+    storeurl -> {0..1} string is
+      @dc:description = "App store URL for an installed app; for IQG 2.1 compliance."@en
+    end
+
+    ver -> {0..1} string is
+      @dc:description = "Application version."@en
+    end
+
+    paid -> {0..1} adcom:YesNo is
+      @dc:description = "Indicator of whether or not this is a paid app."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+  structure Dooh is
+    @description = "This object is used to define an ad supported digital out-of-home (DOOH) experience such as a
+    public kiosk or digital billboard. As a derived class, a Dooh object inherits all DistributionChannel attributes
+    and adds those defined below."@en
+
+    channel -> DistributionChannel is
+      @sdml:flatten = true
+    end
+
+    venue -> {0..1} DoohVenue is
+      @dc:description = "The type of out-of-home venue."@en
+    end
+
+    fixed -> {0..1} integer is
+      @dc:description = "Indicates whether the DOOH placement is in a fixed location (e.g., kiosk, billboard, elevator)
+      or is movable (e.g., taxi), where 1 = fixed, 2 = movable."@en
+    end
+
+    etime -> {0..1} integer is
+      @dc:description = "The exposure time in seconds per view that the creative will be displayed before refreshing to
+      the next creative."@en
+    end
+
+    dpi -> {0..1} integer is
+      @dc:description = "Minimum DPI for text-based creative elements to display clearly."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Publisher is
+    @description = "This object describes the publisher of the media in which ads will be displayed."@en
+
+    id -> {0..1} string is
+      @dc:description = "Vendor-specific unique publisher identifier, as used in ads.txt files."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Displayable name of the publisher."@en
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "Highest level domain of the publisher (e.g., “publisher.com”)."@en
+    end
+
+    cat -> {0..} string is
+      @dc:description = "Array of content categories that describe the publisher using IDs from the taxonomy indicated
+      in cattax. Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+    end
+
+    cattax -> {0..} adcom:CategoryTaxonomy is
+      @dc:description = "The taxonomy in use for the cat attribute."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Content is
+    @description = "This object describes the content in which an impression can appear, which may be syndicated or
+    non-syndicated content. This object may be useful when syndicated content contains impressions and does not
+    necessarily match the publisher's general content. An exchange may or may not have knowledge of the page where the
+    content is running as a result of the syndication method (e.g., a video impression embedded in an iframe on an
+    unknown web property or device)."@en
+
+    id -> {0..1} string is
+      @dc:description = "ID uniquely identifying the content."@en
+    end
+
+    episode -> {0..1} integer is
+      @dc:description = "Episode number."@en
+    end
+
+    title -> {0..1} string is
+      @dc:description = "Content title. Video Examples: “Search Committee” (television), “Star Wars, A New Hope”
+      (movie), or “Endgame” (made for web). Non-Video Example: “Why an Antarctic Glacier Is Melting So Quickly” (Time
+      magazine article)."@en
+    end
+
+    series -> {0..1} string is
+      @dc:description = "Content series. Video Examples: “The Office” (television), “Star Wars” (movie), or “Arby 'N'
+      The Chief” (made for web). Non-Video Example: “Ecocentric” (Time Magazine blog)."@en
+    end
+
+    season -> {0..1} string is
+      @dc:description = "Content season (e.g., “Season 3”)."@en
+    end
+
+    artist -> {0..1} string is
+      @dc:description = "Artist credited with the content."@en
+    end
+
+    genre -> {0..1} string is
+      @dc:description = "Genre that best describes the content (e.g., rock, pop, etc)."@en
+    end
+
+    album -> {0..1} string is
+      @dc:description = "Album to which the content belongs; typically for audio."@en
+    end
+
+    isrc -> {0..1} string is
+      @dc:description = "International Standard Recording Code conforming to ISO-3901."@en
+    end
+
+    url -> {0..1} iri is
+      @dc:description = "A single URL of the content, for buy-side contextualization or review."@en
+    end
+
+    cat -> {0..} string is
+      @dc:description = "Array of content categories describing the content using IDs from the taxonomy indicated in
+      cattax. Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+    end
+
+    cattax -> {0..1} adcom:CategoryTaxonomy is
+      @dc:description = "The taxonomy in use for the cat attribute."@en
+    end
+
+    prodq -> {0..1} adcom:ProductionQualities is
+      @dc:description = "Production quality."@en
+    end
+
+    context -> {0..1} adcom:ContentContext is
+      @dc:description = "Type of content (game, video, text, etc.)."@en
+    end
+
+    rating -> {0..1} string is
+      @dc:description = "Content rating (e.g., MPAA)."@en
+    end
+
+    urating -> {0..1} string is
+      @dc:description = "User rating of the content (e.g., number of stars, likes, etc.)."@en
+    end
+
+    mrating -> {0..1} adcom:MediaRating is
+      @dc:description = "Media rating per IQG guidelines."@en
+    end
+
+    keywords -> {0..1} string is
+      @dc:description = "Comma-separated list of keywords describing the content. Only one of 'keywords' or 'kwarray'
+      may be present. NOTE: this field is deprecated, use 'kwarray' instead."@en
+    end
+
+    kwarray -> {0..} string is
+      @dc:description = "Array of keywords describing the content. Only one of 'keywords' or 'kwarray' may be
+      present."@en
+    end
+
+    live -> {0..1} adcom:YesNo is
+      @dc:description = "Indication of live content, where No = not live, Yes = live (e.g., stream, live blog)."@en
+    end
+
+    srcrel -> {0..1} integer is
+      @dc:description = "Source relationship, where 0 = indirect, 1 = direct."@en
+    end
+
+    len -> {0..1} integer is
+      @dc:description = "Length of content in seconds; typically for video or audio."@en
+    end
+
+    lang -> {0..1} string is
+      @dc:description = "Content language using ISO-639-1-alpha-2. Only one of lang or langb should be present."@en
+    end
+
+    langb -> {0..1} string is
+      @dc:description = "Content language using IETF BCP 47. Only one of lang or langb should be present."@en
+    end
+
+    embed -> {0..1} adcom:YesNo is
+      @dc:description = "Indicator of whether or not the content is embedded off-site from the the site or app
+      described in those objects (e.g., an embedded video player)."@en
+    end
+
+    producer -> {0..1} Producer is
+      @dc:description = "Details about the content producer."@en
+    end
+
+    network -> {0..1} Network is
+      @dc:description = "Details about the network."@en
+    end
+
+    channel -> {0..1} Channel is
+      @dc:description = "Details about the channel."@en
+    end
+
+    data -> {0..} Data is
+      @dc:description = "Additional user data. Each Data object represents a different data source."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Producer is
+    @description = "This object defines the producer of the content in which ad will be displayed. This is particularly
+    useful when the content is syndicated and may be distributed through different publishers and thus when the producer
+    and publisher are not necessarily the same entity."@en
+
+    id -> {0..} string is
+      @dc:description = "Vendor-specific unique producer identifier. Useful if content is syndicated and may be posted
+      on a site using embed tags."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Displayable name of the producer."@en
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "Highest level domain of the producer (e.g., “producer.com”)."@en
+    end
+
+    cat -> {0..} string is
+      @dc:description = "Array of content categories describing the content using IDs from the taxonomy indicated in
+      cattax. Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+    end
+
+    cattax -> {0..1} adcom:CategoryTaxonomy is
+      @dc:description = "The taxonomy in use for the cat attribute."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Network is
+    @description = "This object describes the network an ad will be displayed on. A Network is defined as the parent
+    entity of the Channel object’s entity for the purposes of organizing Channels. Examples are companies that own
+    and/or license a collection of content channels (Viacom, Discovery, CBS, WarnerMedia, Turner and others), or studio
+    that creates such content and self-distributes content. Name is human-readable field while domain and id can be
+    used for reporting and targeting purposes."@en
+
+    id -> {0..1} string is      @dc:description = "A unique identifier assigned by the publisher. This may not be a
+      unique identifier across  supply sources."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Network the content is on (e.g., a TV network like 'ABC')."@en
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "The primary domain of the network (e.g., “abc.com” in the case of the network ABC). It is
+      recommended to include the top private domain (PSL+1) for DSP targeting normalization purposes."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Channel is
+    @description = "This object describes the channel an ad will be displayed on. A Channel is defined as the entity
+    that curates a content library, or stream within a brand name for viewers. Examples are specific view selectable
+    ‘channels’ within linear and streaming television (MTV, HGTV, CNN, BBC One, etc) or a specific stream of audio
+    content commonly called ‘stations.’ Name is human-readable field while domain and id can be used for reporting and
+    targeting purposes."@en
+
+    id -> {0..1} string is
+      @dc:description = "A unique identifier assigned by the publisher. This may not be a unique identifier across
+      all supply sources."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Channel the content is on (e.g., a local channel like 'WABC-TV')."@en
+    end
+
+    domain -> {0..1} adcom:domainname is
+      @dc:description = "The primary domain of the channel (e.g., “abc7ny.com” in the case of the local channel
+      WABC-TV). It is recommended to include the top private domain (PSL+1) for DSP targeting normalization
+      purposes."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure User is
+    @description = "This object contains information known or derived about the human user of the device (i.e., the
+    audience for advertising). The user ID is a vendor-specific artifact and may be subject to rotation or other
+    privacy policies. However, this user ID must be stable long enough to serve reasonably as the basis for frequency
+    capping and retargeting.
+
+    Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+
+    id -> {0..1} string is
+      @dc:description = "Vendor-specific ID for the user. At least one of id or buyeruid is strongly recommended."@en
+    end
+
+    ibuyerd -> {0..1} string is
+      @dc:description = "Buyer-specific ID for the user as mapped by an exchange for the buyer. At least one of id or
+      buyeruid is strongly recommended."@en
+    end
+
+    yob -> {0..1} integer is
+      @dc:description = "Year of birth as a 4-digit integer."@en
+      @sdml:usage = Deprecated
+    end
+
+    gender -> {0..1} string is
+      @dc:description = "Gender, where “M” = male, “F” = female, “O” = known to be other (i.e., omitted is unknown)."@en
+      @sdml:usage = Deprecated
+     end
+
+    keywords -> {0..1} string is
+      @dc:description = "Comma-separated list of keywords, interests, or intent. Only one of 'keywords' or 'kwarray'
+      may be present. NOTE: this field is deprecated, use 'kwarray' instead."@en
+    end
+
+    kwarray -> {0..} string is
+      @dc:description = "Array of keywords describing the content. Only one of 'keywords' or 'kwarray' may be
+      present."@en
+    end
+
+    consent -> {0..1} string is
+      @dc:description = "GDPR consent string if applicable, complying with the comply with the IAB standard Consent
+      String Format in the Transparency and Consent Framework technical specifications."@en
+      @rdfs:seeAlso = <https://bit.ly/2HzD6Kg>
+      @rdfs:seeAlso = <https://iabtechlab.com/gdpr-tech>
+    end
+
+    geo -> {0..1} Geo is
+      @dc:description = "Location of the user's home base (i.e., not necessarily their current location)."@en
+    end
+
+    data -> {0..} Data is
+      @dc:description = "Additional user data. Each Data object represents a different data source."@en
+    end
+
+    eids -> {0..} ExtendedIdentifier is
+      @dc:description = "Extended (third-party) identifiers for this user."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Device is
+    @description = "This object provides information pertaining to the device through which the user is interacting.
+    Device information includes its hardware, platform, location, and carrier data. The device can refer to a mobile
+    handset, a desktop computer, set top box, or other digital device.
+
+    Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+
+    type -> {0..1} adcom:DeviceType is
+      @dc:description = "The general type of device."@en
+    end
+
+    ua -> {0..1} string is
+      @dc:description = "Browser user agent string. This field represents a raw user agent string from the browser. For
+      backwards compatibility, exchanges are recommended to always populate `ua` with the User-Agent string, when
+      available from the end user’s device, even if an alternative representation, such as the User-Agent Client-Hints,
+      is available and gets used to populate `sua`. No inferred or approximated user agents are expected in this field.
+      If both `ua` and `sua` are present in the bid request, `sua` should be considered the more accurate representation
+      of the device attributes. This is because the `ua` may contain a frozen or reduced UserAgent string."@en
+    end
+
+    sua -> {0..1} UserAgent is
+      @dc:description = "Structured user agent information defined by a UserAgent. If both `ua` and `sua` are present
+      in the bid request, `sua` should be considered the more accurate representation of the device attributes. This is
+      because the `ua` may contain a frozen or reduced UserAgent string."@en
+    end
+
+    ifa -> {0..1} string is
+      @dc:description = "ID sanctioned for advertiser use in the clear (i.e., not hashed)."@en
+    end
+
+    dnt -> {0..1} adcom:YesNo is
+      @dc:description = "Standard “Do Not Track” flag as set in the header by the browser, where No = tracking is
+      unrestricted, Yes = do not track."@en
+    end
+
+    lmt -> {0..1} adcom:YesNo is
+      @dc:description = "“Limit Ad Tracking” signal commercially endorsed (e.g., iOS, Android), where No = tracking is
+      unrestricted, Yes = tracking must be limited per commercial guidelines."@en
+    end
+
+    make -> {0..1} string is
+      @dc:description = "Device make (e.g., 'Apple')."@en
+    end
+
+    model -> {0..1} string is
+      @dc:description = "Device model (e.g., 'iPhone10,1' when the specific device model is known, 'iPhone' otherwise).
+      The value obtained from the device O/S should be used when available."@en
+    end
+
+    os -> {0..1} adcom:OperatingSystem is
+      @dc:description = "Device operating system."@en
+    end
+
+    osv -> {0..1} string is
+      @dc:description = "Device operating system version (e.g., '3.1.2')."@en
+    end
+
+    hwv -> {0..1} string is
+      @dc:description = "Hardware version of the device (e.g., '5S' for iPhone 5S)."@en
+    end
+
+    h -> {0..1} integer is
+      @dc:description = "Physical height of the screen in pixels."@en
+    end
+
+    w -> {0..1} integer is
+      @dc:description = "Physical width of the screen in pixels."@en
+    end
+
+    ppi -> {0..1} integer is
+      @dc:description = "Screen size as pixels per linear inch."@en
+    end
+
+    pxratio -> {0..1} double is
+      @dc:description = "The ratio of physical pixels to device independent pixels."@en
+    end
+
+    js -> {0..1} adcom:YesNo is
+      @dc:description = "Support for JavaScript"@en
+    end
+
+    lang -> {0..1} string is
+      @dc:description = "Browser language using ISO-639-1-alpha-2. Only one of lang or langb should be present."@en
+    end
+
+    langb -> {0..1} string is
+      @dc:description = "Browser language using IETF BCP 47. Only one of lang or langb should be present."@en
+    end
+
+    ip -> {0..1} string is
+      @dc:description = "IPv4 address closest to device."@en
+    end
+
+    ipv6 -> {0..1} string is
+      @dc:description = "IP address closest to device as IPv6."@en
+    end
+
+    xff -> {0..1} string is
+      @dc:description = "The value of the 'x-forwarded-for' header."@en
+    end
+
+    iptr -> {0..1} adcom:YesNo is
+      @dc:description = "Indicator of truncation of any of the IP attributes (i.e., ip, ipv6, xff), e.g., from
+      1.2.3.4 to 1.2.3.0."@en
+      @rdfs:seeAlso = <https://tools.ietf.org/html/rfc6235#section-4.1.1>
+    end
+
+    carrier -> {0..1} string is
+      @dc:description = "Carrier or ISP (e.g., “VERIZON”) using exchange curated string names which should be published
+      to bidders beforehand."@en
+    end
+
+    mccmnc -> {0..1} string is
+      @dc:description = "Mobile carrier as the concatenated MCC-MNC code (e.g., “310-005” identifies Verizon Wireless
+      CDMA in the USA). Refer to https://en.wikipedia.org/wiki/Mobile_country_code for further information and
+      references. Note that the dash between the MCC and MNC parts is required to remove parsing ambiguity. The MCC-MNC
+      values represent the SIM installed on the device and do not change when a device is roaming. Roaming may be
+      inferred by a combination of the MCC-MNC, geo, IP and other data signals."@en
+      @rdfs:seeAlso = <https://en.wikipedia.org/wiki/Mobile_country_code>
+    end
+
+    mccmncsim -> {0..1} string is
+      @dc:description = "MCC and MNC of the SIM card using the same format as mccmnc. When both values are available, a
+      difference between them reveals that a user is roaming."@en
+    end
+
+    contype -> {0..1} adcom:ConnectionType is
+      @dc:description = ""@en
+    end
+
+    geofetch -> {0..1} adcom:YesNo is
+      @dc:description = "Indicates if the geolocation API will be available to JavaScript code running in display
+      ad."@en
+    end
+
+    geo -> {0..1} Geo is
+      @dc:description = "Location of the device (i.e., typically the user's current location)."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure UserAgent is
+    @description = "Structured user agent information provided when client supports User-Agent Client Hints. If both
+    device.ua and device.sua are present in the bid request, device.sua should be considered the more accurate
+    representation of the device attributes. This is because the device.ua may contain a frozen or reduced UserAgent
+    string."@en
+    @rdfs:seeAlso = <https://wicg.github.io/ua-client-hints/>
+
+    browsers -> {0..} BrandVersion is
+      @dc:description = "Each BrandVersion object identifies a browser or similar software component. Implementers
+      should send brands and versions derived from the Sec-CH-UA-Full-Version-List header*."@en
+    end
+
+    platform -> {0..} BrandVersion is
+      @dc:description = "Refer to BrandVersion that identifies the user agent’s execution platform/OS. Implementers
+      should send a brand derived from the Sec-CH-UA-Platform header, and version derived from the
+      Sec-CH-UA-Platform-Version header *."@en
+    end
+
+    mobile -> {0..1} adcom:YesNo is
+      @dc:description = "Yes if the agent prefers a “mobile” version of the content, if available, i.e. optimized for
+      small screens or touch input. No if the agent prefers the “desktop” or “full” content. Implementers should derive
+      this value from the Sec-CH-UA-Mobile header *."@en
+    end
+
+    architecture -> {0..1} string is
+      @dc:description = "Device’s major binary architecture, e.g. “x86” or “arm”. Implementers should retrieve this
+      value from the Sec-CH-UA-Arch header*."@en
+    end
+
+    bitness -> {0..1} string is
+      @dc:description = "Device’s bitness, e.g. “64” for 64-bit architecture. Implementers should retrieve this value
+      from the Sec-CH-UA-Bitness header *."@en
+    end
+
+    model -> {0..1} string is
+      @dc:description = "Device model. Implementers should retrieve this value from the Sec-CH-UA-Model header *."@en
+    end
+
+    source -> {0..1} adcom:UserAgentSource is
+      @dc:description = "The source of data used to create this object. Default value = Unknown."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure BrandVersion is
+    @description = "Further identification based on User-Agent Client Hints, the BrandVersion object is used to
+    identify a device’s browser or similar software component, and the user agent’s execution platform or operating
+    system."@en
+
+    brand -> {0..1} string is
+      @dc:description = "A brand identifier, for example, “Chrome” or “Windows”. The value may be sourced from the
+      User-Agent Client Hints headers, representing either the user agent brand (from the Sec-CH-UA-Full-Version
+      header) or the platform brand (from the Sec-CH-UA-Platform header)."@en
+    end
+
+    version -> {0..} string is
+      @dc:description = "A sequence of version components, in descending hierarchical order (major, minor, micro, …)"@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Geo is
+    @description = "This object encapsulates various methods for specifying a geographic location. When subordinate to
+    a Device object, it indicates the location of the device which can also be interpreted as the user's current
+    location. When subordinate to a User object, it indicates the location of the user's home base (i.e., not
+    necessarily their current location). The lat and lon attributes should only be passed if they conform to the
+    accuracy depicted in the type attribute. For example, the centroid of a large region (e.g., postal code) should
+    not be passed."@en
+
+    type -> {0..1} adcom:LocationType is
+      @dc:description = "Source of location data; recommended when passing lat/lon."@en
+    end
+
+    lat -> {0..1} double is
+      @dc:description = "A sequence of version components, in descending hierarchical order (major, minor, micro, …)"@en
+    end
+
+    long -> {0..1} double is
+      @dc:description = "Latitude from -90.0 to +90.0, where negative is south."@en
+    end
+
+    accur -> {0..1} integer is
+      @dc:description = "Estimated location accuracy in meters; recommended when lat/lon are specified and derived
+      from a device's location services (i.e., type = 1). Note that this is the accuracy as reported from the device.
+      Consult OS specific documentation (e.g., Android, iOS) for exact interpretation."@en
+    end
+
+    lastfix -> {0..1} integer is
+      @dc:description = "Number of seconds since this geolocation fix was established. Note that devices may cache
+      location data across multiple fetches. Ideally, this value should be from the time the actual fix was taken."@en
+    end
+
+    ipserv -> {0..1} adcom:IpLocationService is
+      @dc:description = "Service or provider used to determine geolocation from IP address if applicable (i.e.,
+      type = 2)."@en
+    end
+
+    country -> {0..1} string is
+      @dc:description = "Country code using ISO-3166-1-alpha-2. Note that alpha-3 codes may be encountered and vendors
+      are encouraged to be tolerant of them."@en
+    end
+
+    region -> {0..1} string is
+      @dc:description = "Region code using ISO-3166-2; 2-letter state code if USA."@en
+    end
+
+    metro -> {0..1} string is
+      @dc:description = "Regional marketing areas such as Nielsen's DMA codes or other similar taxonomy to be agreed
+      among vendors prior to use. Note that DMA is a trademarked asset of The Nielsen Company. Vendors are encouraged
+      to ensure their use of DMAs is properly licensed."@en
+    end
+
+    city -> {0..1} string is
+      @dc:description = "City using United Nations Code for Trade & Transport Locations “UN/LOCODE” with the space
+      between country and city suppressed (e.g., Boston MA, USA = “USBOS”). Refer to UN/LOCODE Code List."@en
+      @rdfs:seeAlso = <https://www.unece.org/cefact/locode/service/location>
+    end
+
+    zip -> {0..1} string is
+      @dc:description = "ZIP or postal code."@en
+    end
+
+    utcoffset -> {0..1} string is
+      @dc:description = "Local time as the number +/- of minutes from UTC."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Data is
+    @description = "The data and segment objects together allow additional data about the related object (e.g., user,
+    content) to be specified. This data may be from multiple sources whether from the exchange itself or third parties
+    as specified by the id attribute. When in use, vendor-specific IDs should be discussed beforehand among the parties.
+
+    Implementer should ensure compliance with regional legislation around data usage and sharing."@en
+
+    id -> {0..1} string is
+      @dc:description = "Vendor-specific ID for the data provider."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Vendor-specific displayable name for the data provider."@en
+    end
+
+    segment -> {0..} Segment is
+      @dc:description = "Array of Segment objects that contain the actual data values."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Segment is
+    @description = "Segment objects are essentially key-value pairs that convey specific units of data. The parent
+    Data object is a collection of such values from a given data provider. When in use, vendor-specific IDs should
+    be discussed beforehand among the parties."@en
+
+    id -> {0..1} string is
+      @dc:description = "ID of the data segment specific to the data provider."@en
+    end
+
+    name -> {0..1} string is
+      @dc:description = "Displayable name of the data segment specific to the data provider."@en
+    end
+
+    value -> {0..1} string is
+      @dc:description = "String representation of the data segment value."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure ExtendedIdentifiers is
+    @description = "Extended identifiers support in the OpenRTB specification allows buyers to use audience data in
+    real-time bidding. The exchange should ensure that business agreements allow for the sending of this data. Note,
+    it is assumed that exchanges and DSPs will collaborate with the appropriate regulatory agencies and ID vendor(s)
+    to ensure compliance."@en
+
+    source -> {0..1} string is
+      @dc:description = "Source or technology provider responsible for the set of included IDs. Expressed as a
+      top-level domain."@en
+    end
+
+    uids -> {0..} ExtendedIdentifierUID is
+      @dc:description = "Array of extended ID UID objects from the given source."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure ExtendedIdentifierUID is
+
+    id -> {0..1} string is
+      @dc:description = "Cookie or platform-native identifier."@en
+    end
+
+    atype -> {0..1} adcom:AgentType is
+      @dc:description = "Type of user agent the match is from. It is highly recommended to set this, as many DSPs
+      separate app-native IDs from browser-based IDs and require a type value for ID resolution."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Regs is
+    @description = "This object contains any known legal, governmental, or industry regulations that are in effect."@en
+
+    coppa -> {0..1} adcom:YesNo is
+      @dc:description = "Flag indicating if COPPA regulations apply. The Children's Online Privacy Protection Act
+      (COPPA) was established by the U.S. Federal Trade Commission."@en
+    end
+
+    gdpr -> {0..1} adcom:YesNo is
+      @dc:description = "Flag indicating if GDPR regulations apply. The General Data Protection Regulation (GDPR) is
+      a regulation of the European Union."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
+  structure Restrictions is
+    @description = "This object allows lists of restrictions on ad responses to be specified including specific content
+    categories, advertisers, ads pertaining to specific apps, or creative attributes."@en
+
+    bcat -> {0..} string is
+      @dc:description = "Block list of content categories using IDs from the taxonomy indicated in cattax."@en
+    end
+
+    cattax -> {0..1} integer is
+      @dc:description = "The taxonomy in use for the bcat attribute. Default value = 2."@en
+    end
+
+    badv -> {0..} string is
+      @dc:description = "Block list of advertisers by their domains (e.g., “ford.com”)."@en
+    end
+
+    bapp -> {0..} string is
+      @dc:description = "Block list of apps for which ads are disallowed. These should be bundle or package names
+      (e.g., “com.foo.mygame”) and should NOT be app store IDs (e.g., not iTunes store IDs)."@en
+    end
+
+    battr -> {0..} adcom:CreativeAttributes is
+      @dc:description = "Block list of creative attributes."@en
+    end
+
+    ;; ext -> Object -- Optional vendor-specific extensions.
+
+  end
+
 end
